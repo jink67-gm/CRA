@@ -175,6 +175,33 @@ details.more ul{margin:8px 0 0;padding-left:18px;font-size:14px}
 details.more li{margin:4px 0}
 details.card>summary{font-size:16px;color:var(--ink)}
 
+/* 자료 */
+.mat{position:relative;background:#fff;border:1.5px solid var(--line2);border-radius:14px;padding:26px 18px 16px;margin:6px 0 12px}
+.mat-h{position:absolute;top:-11px;left:14px;background:var(--navy);color:#fff;font-size:12.5px;font-weight:700;padding:2px 10px;border-radius:999px}
+.mat-svg{display:block;width:100%;max-width:460px;height:auto;margin:0 auto;font-family:inherit}
+.mat-cap{text-align:center;font-weight:700;font-size:14.5px;margin-bottom:8px}
+.mat-src{text-align:right;font-size:12px;color:var(--muted);margin-top:6px}
+.mat-src::before{content:"출처: "}
+.mat-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.mat-tb{border-collapse:collapse;margin:0 auto;font-size:13.5px}
+.mat-tb th,.mat-tb td{border:1px solid #CFC6B6;padding:5px 8px;text-align:center}
+.mat-tb th{background:#F2EDE3}
+.mat-news{font-size:14.5px;line-height:1.75}
+.mat-paper,.mat-org{font-size:12px;color:var(--muted);border-bottom:2px solid var(--ink);padding-bottom:4px;margin-bottom:8px}
+.mat-head{font-size:17px;font-weight:800;margin-bottom:6px;letter-spacing:-.3px}
+.mat-news p{margin:0 0 6px;text-indent:.6em}
+.mat-notice ul{margin:6px 0 0;padding-left:20px;font-size:14.5px}
+.mat-text{font-size:14.5px;line-height:1.8}
+.mat-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mat-cards div{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13.5px;display:flex;flex-direction:column;gap:2px}
+.mat-stat{display:flex;align-items:center;gap:16px;justify-content:center;font-size:15px;font-weight:700}
+.mat-big{font-size:42px;font-weight:800;color:#C0392B}
+.mat-pics{display:flex;justify-content:space-around;gap:10px;text-align:center}
+.mat-pics>div{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 4px}
+.mat-emo{font-size:34px;line-height:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.mat-pics span{font-size:13.5px;font-weight:700}
+.mat-ans{display:flex;align-items:flex-end;gap:8px;margin-top:10px;font-size:15px}
+.mat-ans span{flex:1;border-bottom:1.5px solid var(--ink);height:22px}
 /* polish */
 .pgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
 .pside{position:sticky;top:76px;max-height:calc(100vh - 92px);overflow:auto;margin-bottom:0}
@@ -279,6 +306,99 @@ const SETS = [
   }
 ];
 
+// ---------- 자료 그리기 도우미 ----------
+const M = {
+  box: (label, inner) => `<div class="mat"><span class="mat-h">${label}</span>${inner}</div>`,
+  src: (t) => `<div class="mat-src">${t}</div>`,
+  bars({ title = "", unit = "", labels, values, ticks, src = "", color = "#5B8DB8" }) {
+    const W = 460, H = 240, L = 44, R = 12, T = (title ? 34 : 16) + (unit ? 12 : 0), B = 30;
+    const max = ticks[ticks.length - 1], ph = H - T - B, pw = W - L - R, bw = Math.min(46, (pw / labels.length) * 0.55);
+    const y = (v) => T + ph - (v / max) * ph;
+    let g = "";
+    ticks.forEach((t) => { g += `<line x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}" stroke="#E5E0D8"/><text x="${L - 6}" y="${y(t) + 4}" text-anchor="end" font-size="11" fill="#555">${t}</text>`; });
+    labels.forEach((lb, i) => {
+      const cx = L + (pw / labels.length) * (i + 0.5);
+      g += `<rect x="${cx - bw / 2}" y="${y(values[i])}" width="${bw}" height="${T + ph - y(values[i])}" fill="${color}" rx="2"/><text x="${cx}" y="${H - 10}" text-anchor="middle" font-size="11.5" fill="#333">${lb}</text>`;
+    });
+    g += `<line x1="${L}" x2="${W - R}" y1="${T + ph}" y2="${T + ph}" stroke="#888"/>`;
+    if (title) g += `<text x="${W / 2}" y="18" text-anchor="middle" font-size="14" font-weight="700" fill="#222">${title}</text>`;
+    if (unit) g += `<text x="${L - 6}" y="${T - 10}" text-anchor="end" font-size="10.5" fill="#555">${unit}</text>`;
+    return `<svg viewBox="0 0 ${W} ${H}" class="mat-svg">${g}</svg>${src ? M.src(src) : ""}`;
+  },
+  pyramid(year, vals) {
+    const ages = ["80+", "70대", "60대", "50대", "40대", "30대", "20대", "10대", "0~9"];
+    const W = 260, H = 214, C = W / 2, G = 22, T = 28, rh = 20, k = 7.2;
+    let g = `<text x="${C}" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#222">${year}년</text>`;
+    g += `<text x="14" y="16" font-size="11" fill="#4A78A8">남</text><text x="${W - 14}" y="16" text-anchor="end" font-size="11" fill="#C0605A">여</text>`;
+    ages.forEach((a, i) => {
+      const w = (vals[8 - i] / 2) * k, yy = T + i * rh;
+      g += `<rect x="${C - G - w}" y="${yy}" width="${w}" height="${rh - 4}" fill="#7FA6CC"/><rect x="${C + G}" y="${yy}" width="${w}" height="${rh - 4}" fill="#E39B94"/><text x="${C}" y="${yy + 12}" text-anchor="middle" font-size="9.5" fill="#444">${a}</text>`;
+    });
+    return `<svg viewBox="0 0 ${W} ${H}" class="mat-svg" style="max-width:260px">${g}</svg>`;
+  },
+  map({ compass = true, scale = false, title = "우리 고장 지도" }) {
+    const W = 360, H = 250;
+    let g = `<rect x="0" y="0" width="${W}" height="${H}" fill="#F7F4EC"/>`;
+    g += `<path d="M0 125 H${W} M180 0 V${H} M0 40 L${W} 210" stroke="#D8D2C4" stroke-width="10" fill="none"/>`;
+    const place = (x, y, name, color) => `<rect x="${x - 34}" y="${y - 15}" width="68" height="30" rx="6" fill="${color}" stroke="#555" stroke-width="0.8"/><text x="${x}" y="${y + 4.5}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#222">${name}</text>`;
+    g += place(180, 125, "학교", "#FFE7A8") + place(70, 60, "시청", "#CFE3F5") + place(290, 62, "우체국", "#F6D3CF") + place(290, 195, "병원", "#DDEFD9") + place(70, 195, "도서관", "#E7DDF3");
+    if (compass) g += `<g transform="translate(330,32)"><circle r="17" fill="#fff" stroke="#888"/><path d="M0 -14 L5 0 L0 -3 L-5 0 Z" fill="#C0392B"/><path d="M0 14 L5 0 L0 3 L-5 0 Z" fill="#999"/><text y="-19" text-anchor="middle" font-size="10" font-weight="700">북</text></g>`;
+    if (scale) g += `<g transform="translate(16,232)"><line x1="0" x2="80" y1="0" y2="0" stroke="#222" stroke-width="2"/><line x1="0" x2="0" y1="-4" y2="4" stroke="#222"/><line x1="40" x2="40" y1="-3" y2="3" stroke="#222"/><line x1="80" x2="80" y1="-4" y2="4" stroke="#222"/><text x="0" y="-7" font-size="9.5">0</text><text x="36" y="-7" font-size="9.5">100</text><text x="72" y="-7" font-size="9.5">200m</text></g>`;
+    return `<div class="mat-cap">${title}</div><svg viewBox="0 0 ${W} ${H}" class="mat-svg" style="max-width:360px">${g}</svg>`;
+  },
+  river() {
+    const W = 460, H = 210;
+    let g = `<rect width="${W}" height="${H}" fill="#F7F4EC"/><path d="M380 0 Q360 105 390 ${H} H${W} V0 Z" fill="#BFDDF2"/><text x="425" y="110" font-size="13" fill="#2C6E9B" font-weight="700">바다</text>`;
+    g += `<path d="M10 150 L45 70 L80 150 Z M55 150 L95 55 L135 150 Z" fill="#B9C9A6" stroke="#7E9465"/><text x="58" y="172" font-size="11.5" fill="#556B3F">산지</text>`;
+    g += `<path d="M95 100 C150 95 170 140 230 130 S320 90 385 110" stroke="#5AA0D6" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+    g += `<ellipse cx="320" cy="150" rx="55" ry="24" fill="#E8E2B8"/><text x="300" y="183" font-size="11.5" fill="#7A6E2E">넓은 평야</text>`;
+    const city = (x, y, k) => `<circle cx="${x}" cy="${y}" r="13" fill="#fff" stroke="#C0392B" stroke-width="2"/><text x="${x}" y="${y + 4.5}" text-anchor="middle" font-size="12.5" font-weight="800" fill="#C0392B">${k}</text>`;
+    g += city(118, 78, "가") + city(205, 108, "나") + city(345, 128, "다");
+    g += `<text x="105" y="30" font-size="11" fill="#666">← 상류</text><text x="330" y="30" font-size="11" fill="#666">하류 →</text>`;
+    return `<div class="mat-cap">강 주변 도시의 위치</div><svg viewBox="0 0 ${W} ${H}" class="mat-svg">${g}</svg>`;
+  },
+  table(head, rows, cap = "", src = "") {
+    return `${cap ? `<div class="mat-cap">${cap}</div>` : ""}<table class="mat-tb"><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</table>${src ? M.src(src) : ""}`;
+  },
+  news(paper, head, paras) {
+    return `<div class="mat-news"><div class="mat-paper">${paper}</div><div class="mat-head">${head}</div>${paras.map((p) => `<p>${p}</p>`).join("")}</div>`;
+  },
+  notice(org, title, items) {
+    return `<div class="mat-notice"><div class="mat-org">${org}</div><div class="mat-head">${title}</div><ul>${items.map((i) => `<li>${i}</li>`).join("")}</ul></div>`;
+  },
+  stat(big, text, src = "") {
+    return `<div class="mat-stat"><div class="mat-big">${big}</div><div>${text}</div></div>${src ? M.src(src) : ""}`;
+  },
+  pics(items) {
+    return `<div class="mat-pics">${items.map(([e, n]) => `<div><div class="mat-emo">${e}</div><span>${n}</span></div>`).join("")}</div>`;
+  },
+  gama: `<svg viewBox="0 0 64 48" width="44" height="34"><path d="M10 18 L32 6 L54 18 Z" fill="#B5543C"/><rect x="16" y="18" width="32" height="20" fill="#E9C88A" stroke="#8A5A2B"/><rect x="27" y="23" width="10" height="11" fill="#8A5A2B"/><line x1="2" y1="34" x2="62" y2="34" stroke="#6B4423" stroke-width="3"/></svg>`
+};
+const PY1970 = [26.2, 22.9, 16.1, 12.2, 9.4, 6.5, 4.3, 1.9, 0.5];
+const PY2020 = [7.6, 9.4, 13.2, 13.4, 16.0, 16.6, 12.6, 7.2, 4.0];
+const pyrPair = (a, b) => `<div class="mat-cap">연령별 인구 구성(%)</div><div class="mat-row">${M.pyramid(a[0], a[1])}${b ? M.pyramid(b[0], b[1]) : ""}</div>${M.src("통계청 자료를 바탕으로 단순화함")}`;
+const MAT = {
+  trash: M.box("자료", M.table(["월", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"], [["배출량", 42, 40, 41, 43, 48, 45, 52, 55, 61, 47, 44, 50]], "우리 마을의 월별 쓰레기 배출량 (단위: 톤)", "○○동 행정복지센터, 2025년")),
+  pyr: M.box("자료", pyrPair(["1970", PY1970], ["2020", PY2020])),
+  incin: M.box("자료", M.news("○○일보 | 2025년 9월 3일", "○○시, 주민 투표로 쓰레기 소각장 위치 결정", ["○○시는 새 쓰레기 소각장의 위치를 주민 투표로 정했다고 밝혔다. 시는 후보지 세 곳을 놓고 지난 두 달 동안 동네마다 주민 설명회를 열어 소각장의 안전성과 환경 대책을 설명했다.", "또 시청 누리집에 의견 게시판을 열어 주민 1,200여 명의 의견을 모았다. 지난달 열린 주민 투표에는 주민 절반 이상이 참여하였고, 그 결과에 따라 위치가 정해졌다.", "한 주민은 “설명회와 게시판에서 궁금한 점을 직접 물을 수 있어서 결과를 받아들이기 쉬웠다.”라고 말했다."])),
+  mapScale: M.box("자료", M.map({ compass: true, scale: true, title: "학교 주변 지도" })),
+  mapNoCompass: M.box("자료", M.map({ compass: false })),
+  mapCompass: M.box("자료", M.map({ compass: true })),
+  age2020: M.box("자료", M.bars({ title: "2020년 우리나라의 연령별 인구 구성", unit: "(%)", labels: ["0~9", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80+"], values: PY2020, ticks: [5, 10, 15, 20], src: "통계청 자료를 바탕으로 단순화함" })),
+  sejong: M.box("자료", `<div class="mat-text"><b>세종 대왕의 업적</b><br>세종 대왕은 백성이 쉽게 익혀 쓸 수 있도록 훈민정음을 만들었다. 또 장영실 등과 함께 비의 양을 재는 측우기와 시간을 알려 주는 자격루를 만들어 농사에 도움을 주었다. 우리 땅의 기후에 맞는 농사법을 모아 『농사직설』을 펴내기도 하였다.</div>`),
+  gunPop: M.box("자료", M.bars({ title: "○○군의 인구 변화", unit: "(천 명)", labels: ["2015", "2017", "2019", "2021", "2023", "2025"], values: [58, 55, 52, 49, 46, 43], ticks: [20, 40, 60], src: "○○군청 통계" })),
+  river: M.box("자료", M.river()),
+  parkNews: M.box("자료", M.news("○○신문 | 2025년 8월 20일", "주말마다 쓰레기로 몸살 앓는 ○○ 공원", ["여름철 주말이면 ○○ 공원 곳곳에 음식 포장 용기와 일회용 컵이 쌓인다. 공원 이용객은 크게 늘었지만 쓰레기통은 입구에 두 개뿐이다.", "공원을 찾은 한 시민은 “쓰레기통을 찾기 어려워 벤치에 두고 가는 사람이 많다.”라고 말했다. 시청은 쓰레기를 치우는 데 해마다 더 많은 예산을 쓰고 있다."])),
+  agency: M.box("자료", `<div class="mat-cap">우리 고장의 공공 기관 안내</div><div class="mat-cards">${[["시청", "주민 생활에 필요한 시설을 만들고, 고장의 여러 일을 계획하고 처리합니다."], ["소방서", "불이 났을 때 불을 끄고, 위험에 처한 사람을 구조합니다."], ["경찰서", "사람들의 안전을 지키고, 교통질서를 바로잡습니다."], ["보건소", "예방 접종을 하고, 주민의 건강을 돌봅니다."]].map(([n, t]) => `<div><b>${n}</b><span>${t}</span></div>`).join("")}</div>`),
+  carNoTitle: M.box("자료", M.bars({ labels: ["2000", "2010", "2020"], values: [12, 21, 28], ticks: [10, 20, 30] })),
+  carTitle: M.box("자료", M.bars({ title: "우리 고장의 연도별 자동차 등록 대수", unit: "(천 대)", labels: ["2000", "2010", "2020"], values: [12, 21, 28], ticks: [10, 20, 30], src: "○○시 통계, 2021년" })),
+  phoneNoSrc: M.box("자료", M.stat("70%", "우리 시 청소년의 70%가<br>하루 3시간 넘게 스마트폰을 쓴다.")),
+  phoneSrc: M.box("자료", M.stat("70%", "우리 시 청소년의 70%가<br>하루 3시간 넘게 스마트폰을 쓴다.", "○○시 청소년 생활 실태 조사, 2025년")),
+  trans: M.box("자료 (가)", M.pics([[M.gama, "가마"], ["🛶", "나룻배"], ["🐎", "말"]])) + M.box("자료 (나)", M.pics([["🚌", "버스"], ["🚄", "고속 열차"], ["✈️", "비행기"]])),
+  answerLine: `<div class="mat-ans"><b>답:</b><span></span></div>`,
+  heritage: M.box("자료", M.notice("국가유산청", "국가유산 보호 활동 안내", ["국가유산에 낙서를 하거나 함부로 만지지 않아요.", "관람할 때에는 정해진 길로만 다녀요.", "주변에 쓰레기를 버리지 않아요.", "국가유산이 훼손된 것을 보면 관리 기관에 알려요."]))
+};
+
 // =====================================================================
 // 데이터 2: 문항 검토하기 (사회과 문항, 정답 1개, 보기 4개)
 // =====================================================================
@@ -323,22 +443,22 @@ const CLINIC = [
   { subj: "사회", item: "(문) 지방 자치 단체의 재정 자립도가 지역 주민의 삶에 미치는 함의를 논하시오.", ans: "G", opts: ["G", "C", "E", "H"],
     why: "‘재정 자립도’, ‘함의’, ‘논하시오’ 같은 표현이 어려워 무엇을 써야 하는지 이해하기 어렵습니다. 사회과 이해보다 어휘 이해력이 함께 측정됩니다.",
     fix: "(문) 우리 지역의 살림에 쓸 돈이 부족하면 주민들의 생활에 어떤 어려움이 생길 수 있는지 한 가지 쓰시오." },
-  { subj: "사회", item: "[자료: 우리 마을의 월별 쓰레기 배출량 표]\n(문) 쓰레기를 줄이기 위해 우리가 할 수 있는 일을 한 가지 쓰시오.", ans: "H", opts: ["H", "C", "G", "E"],
+  { subj: "사회", mat: MAT.trash, item: "(문) 쓰레기를 줄이기 위해 우리가 할 수 있는 일을 한 가지 쓰시오.", ans: "H", opts: ["H", "C", "G", "E"],
     why: "자료를 읽지 않아도 상식으로 답할 수 있어 자료 해석 능력을 확인할 수 없습니다. 자료는 장식이 아니라 답을 쓸 때 활용해야 하는 단서여야 합니다.",
     fix: "(문) 표에서 쓰레기 배출량이 가장 많이 늘어난 달을 찾아 그 까닭을 추측하고, 그 달에 우리 마을에서 실천할 수 있는 쓰레기 줄이기 방법을 한 가지 쓰시오." },
-  { subj: "사회", item: "[자료: 1970년과 2020년의 우리나라 인구 피라미드]\n(문) 저출산 문제를 해결하기 위한 방법을 한 가지 쓰시오.", ans: "H", opts: ["H", "C", "D", "G"],
+  { subj: "사회", mat: MAT.pyr, item: "(문) 저출산 문제를 해결하기 위한 방법을 한 가지 쓰시오.", ans: "H", opts: ["H", "C", "D", "G"],
     why: "인구 피라미드를 읽지 않아도 알고 있는 내용만으로 답할 수 있습니다. 두 자료를 비교해 변화를 읽어 내는 능력을 확인할 수 없습니다.",
     fix: "(문) 1970년과 2020년의 인구 피라미드를 비교하여 달라진 점을 한 가지 쓰고, 이러한 변화로 앞으로 생길 수 있는 사회 문제를 한 가지 쓰시오." },
-  { subj: "사회", item: "[자료: 신문 기사 ‘○○시, 주민 투표로 쓰레기 소각장 위치 결정’ – 주민 설명회, 주민 투표, 누리집 의견 게시판 운영 내용]\n(문) 기사에서 주민들이 참여한 방법을 한 가지 찾아 쓰시오.", ans: "I", opts: ["I", "C", "G", "J"],
+  { subj: "사회", mat: MAT.incin, item: "(문) 기사에서 주민들이 참여한 방법을 한 가지 찾아 쓰시오.", ans: "I", opts: ["I", "C", "G", "J"],
     why: "기사의 문장을 그대로 옮겨 쓰기만 해도 답이 되어, 주민 참여의 의미를 이해했는지 확인할 수 없습니다.",
     fix: "(문) 기사에서 주민들이 참여한 방법을 한 가지 찾고, 그 방법이 소각장 위치를 정하는 데 어떤 도움이 되었는지 자신의 말로 쓰시오.\n<조건> 참여 방법을 쓸 때, 기사의 문장을 그대로 옮겨 쓰지 않아야 함" },
-  { subj: "사회", item: "[평가요소] 지도의 축척을 활용하여 실제 거리를 구하고, 그 과정을 설명하기\n[자료: 학교 주변 지도(방위표, 축척 표시)]\n(문) 지도에서 우체국은 학교의 어느 방향에 있는지 쓰시오.", ans: "J", opts: ["J", "C", "E", "G"],
+  { subj: "사회", mat: MAT.mapScale, item: "[평가요소] 지도의 축척을 활용하여 실제 거리를 구하고, 그 과정을 설명하기\n(문) 지도에서 우체국은 학교의 어느 방향에 있는지 쓰시오.", ans: "J", opts: ["J", "C", "E", "G"],
     why: "평가요소는 ‘축척으로 실제 거리를 구하고 과정을 설명하기’인데, 문항은 방위만 묻습니다. 이 문항으로는 평가하려던 능력을 확인할 수 없습니다.",
     fix: "(문) 지도의 축척을 활용하여 학교에서 우체국까지의 실제 거리를 구하고, 어떻게 구했는지 그 과정을 쓰시오." },
-  { subj: "사회", item: "[자료: 방위표가 없는 우리 고장 지도]\n(문) 지도를 보고 시청이 학교의 어느 방향에 있는지 쓰고, 그렇게 판단한 근거를 쓰시오.", ans: "K", opts: ["K", "C", "E", "G"],
+  { subj: "사회", mat: MAT.mapNoCompass, item: "(문) 지도를 보고 시청이 학교의 어느 방향에 있는지 쓰고, 그렇게 판단한 근거를 쓰시오.", ans: "K", opts: ["K", "C", "E", "G"],
     why: "지도에 방위표가 없어 방향을 판단할 근거가 없습니다. 학생은 답을 쓸 수 없거나, ‘위쪽이 북쪽’이라는 짐작에 기대어 답하게 됩니다.",
-    fix: "[자료: 방위표가 있는 우리 고장 지도]\n(문) 지도의 방위표를 활용하여 시청이 학교의 어느 방향에 있는지 쓰고, 그렇게 판단한 근거를 쓰시오." },
-  { subj: "사회", item: "[자료: 2020년 우리나라의 연령별 인구 그래프]\n(문) 자료를 보고 우리나라 인구가 시간이 흐르면서 어떻게 변해 왔는지 쓰시오.", ans: "K", opts: ["K", "C", "D", "G"],
+    fixMat: MAT.mapCompass, fix: "(문) 지도의 방위표를 활용하여 시청이 학교의 어느 방향에 있는지 쓰고, 그렇게 판단한 근거를 쓰시오." },
+  { subj: "사회", mat: MAT.age2020, item: "(문) 자료를 보고 우리나라 인구가 시간이 흐르면서 어떻게 변해 왔는지 쓰시오.", ans: "K", opts: ["K", "C", "D", "G"],
     why: "한 해의 자료만으로는 시간에 따른 변화를 알 수 없습니다. 질문이 요구하는 내용을 자료에서 찾을 수 없습니다.",
     fix: "[자료: 1970년, 1995년, 2020년의 연령별 인구 그래프]\n(문) 세 그래프를 비교하여 우리나라 인구 구성이 어떻게 변해 왔는지 두 가지 쓰시오." },
   { subj: "사회", item: "(문) 조선 후기에 나타난 사회 변화의 모습을 세 가지 쓰고, 각각의 원인과 결과, 오늘날 우리에게 주는 교훈을 쓰시오. (2점)", ans: "M", opts: ["M", "C", "E", "G"],
@@ -359,40 +479,40 @@ const CLINIC = [
   { subj: "사회", item: "(문) 기온이 높고 비가 많이 내리는 남부 지방 여름 기후의 특징을 쓰시오.", ans: "E", opts: ["E", "C", "D", "H"],
     why: "‘기온이 높고 비가 많이 내리는’이라는 질문 속 표현을 그대로 옮기면 정답이 됩니다.",
     fix: "[자료: 서울과 제주의 월별 기온·강수량 그래프]\n(문) 두 그래프를 비교하여 서울과 제주의 기후 차이를 두 가지 쓰시오." },
-  { subj: "사회", item: "[자료: 세종 대왕의 업적(훈민정음 창제, 측우기 제작 등)을 정리한 글]\n(문) 세종 대왕의 업적을 두 가지 찾아 쓰시오.", ans: "I", opts: ["I", "C", "G", "J"],
+  { subj: "사회", mat: MAT.sejong, item: "(문) 세종 대왕의 업적을 두 가지 찾아 쓰시오.", ans: "I", opts: ["I", "C", "G", "J"],
     why: "글에 나온 업적을 그대로 옮겨 쓰면 답이 되어, 업적의 의미를 이해했는지 확인할 수 없습니다.",
     fix: "(문) 글에서 세종 대왕의 업적을 두 가지 찾고, 각 업적이 백성의 생활에 어떤 도움이 되었는지 자신의 말로 쓰시오." },
   { subj: "사회", item: "[평가요소] 우리나라와 이웃 나라의 교류 모습을 비교하여 공통점과 차이점 설명하기\n(문) 우리나라와 교류가 활발한 나라를 세 가지 쓰시오.", ans: "J", opts: ["J", "C", "E", "G"],
     why: "평가요소는 ‘교류 모습을 비교하여 공통점과 차이점 설명하기’인데, 문항은 나라 이름만 묻습니다.",
     fix: "[자료: 우리나라와 중국, 일본의 교류 사례]\n(문) <자료>를 보고 우리나라가 두 나라와 교류하는 모습의 공통점과 차이점을 한 가지씩 쓰시오." },
-  { subj: "사회", area: "형식", item: "[자료: 최근 10년간 ○○군의 인구 변화 그래프]\n(문) 자료를 보고 ○○군의 인구가 줄어든 까닭을 두 가지 추측하여 쓰고, 이를 해결하기 위한 방법을 한 가지 쓰시오.", ans: "Q", opts: ["Q", "C", "E", "G"],
+  { subj: "사회", mat: MAT.gunPop, area: "형식", item: "(문) 자료를 보고 ○○군의 인구가 줄어든 까닭을 두 가지 추측하여 쓰고, 이를 해결하기 위한 방법을 한 가지 쓰시오.", ans: "Q", opts: ["Q", "C", "E", "G"],
     why: "배점이 표시되어 있지 않습니다. 학생은 어느 부분에 얼마나 써야 할지 가늠할 수 없고, 채점기준표의 점수 단계를 정할 근거도 없습니다.",
     fix: "(문) 자료를 보고 ○○군의 인구가 줄어든 까닭을 두 가지 추측하여 쓰고, 이를 해결하기 위한 방법을 한 가지 쓰시오. (3점)" },
-  { subj: "사회", area: "형식", item: "[자료: 우리나라의 주요 강과 도시 지도]\n(1) 지도에서 강 하류에 발달한 도시를 한 곳 찾아 쓰시오. (1점)\n(2) (1)의 도시가 강 하류에 발달한 까닭을 지형의 특징과 관련지어 쓰시오.", ans: "Q", opts: ["Q", "R", "C", "G"],
+  { subj: "사회", mat: MAT.river, area: "형식", item: "(1) 지도의 가~다 중 강 하류에 발달한 도시를 찾아 기호를 쓰시오. (1점)\n(2) (1)의 도시가 강 하류에 발달한 까닭을 지형의 특징과 관련지어 쓰시오.", ans: "Q", opts: ["Q", "R", "C", "G"],
     why: "(2)에 배점이 없습니다. 하위 문항마다 배점을 밝혀야 학생이 답안 분량을 정하고, 채점자도 같은 기준으로 채점할 수 있습니다.",
     fix: "(2) (1)의 도시가 강 하류에 발달한 까닭을 지형의 특징과 관련지어 쓰시오. (2점)" },
-  { subj: "사회", area: "형식", item: "[자료: 공원 쓰레기 문제를 다룬 신문 기사]\n(문) 기사를 읽고 기사에 나타난 지역 문제가 무엇인지 쓰고 그 문제가 생긴 까닭을 기사에서 찾아 쓴 다음 이 문제를 해결하기 위해 주민과 시청이 각각 할 수 있는 일을 한 가지씩 쓰시오. (4점)", ans: "R", opts: ["R", "C", "G", "Q"],
+  { subj: "사회", mat: MAT.parkNews, area: "형식", item: "(문) 기사를 읽고 기사에 나타난 지역 문제가 무엇인지 쓰고 그 문제가 생긴 까닭을 기사에서 찾아 쓴 다음 이 문제를 해결하기 위해 주민과 시청이 각각 할 수 있는 일을 한 가지씩 쓰시오. (4점)", ans: "R", opts: ["R", "C", "G", "Q"],
     why: "네 가지 지시를 한 문장에 길게 이어 써서 학생이 일부를 빠뜨리기 쉽습니다. 답이 빠졌을 때 몰라서인지 놓쳐서인지 구분할 수 없습니다.",
     fix: "(문) 기사를 읽고 물음에 답하시오.\n(1) 기사에 나타난 지역 문제와 그 문제가 생긴 까닭을 쓰시오. (2점)\n(2) 이 문제를 해결하기 위해 주민과 시청이 할 수 있는 일을 각각 한 가지씩 쓰시오. (2점)" },
-  { subj: "사회", area: "형식", item: "[자료: 우리 고장의 공공 기관 안내도]\n(문) 자료에서 공공 기관을 두 가지 찾아 하는 일을 쓰되 자료의 문장을 그대로 옮기지 말고 자신의 말로 바꾸어 쓰고 각각 한 문장으로 쓰며 ‘주민’이라는 낱말을 반드시 넣어 쓰시오. (4점)", ans: "R", opts: ["R", "C", "G", "Q"],
+  { subj: "사회", mat: MAT.agency, area: "형식", item: "(문) 자료에서 공공 기관을 두 가지 찾아 하는 일을 쓰되 자료의 문장을 그대로 옮기지 말고 자신의 말로 바꾸어 쓰고 각각 한 문장으로 쓰며 ‘주민’이라는 낱말을 반드시 넣어 쓰시오. (4점)", ans: "R", opts: ["R", "C", "G", "Q"],
     why: "답안 조건 세 가지가 발문 속에 섞여 있어 눈에 띄지 않습니다. 조건을 놓친 답안이 많아지고, 채점할 때도 조건을 하나하나 다시 찾아야 합니다.",
     fix: "(문) 자료에서 공공 기관을 두 가지 찾아 각 기관이 하는 일을 쓰시오. (4점)\n<조건>\n· 자료의 문장을 그대로 옮기지 말고 자신의 말로 쓸 것\n· 기관마다 한 문장으로 쓸 것\n· ‘주민’이라는 낱말을 넣을 것" },
-  { subj: "사회", area: "형식", item: "[자료: 제목과 단위가 없는 막대그래프 – 가로축 2000, 2010, 2020 / 세로축 10, 20, 30]\n(문) 그래프를 보고 우리 고장에서 나타난 변화를 쓰고, 그 변화가 주민 생활에 준 영향을 쓰시오. (3점)", ans: "S", opts: ["S", "C", "E", "G"],
+  { subj: "사회", mat: MAT.carNoTitle, area: "형식", item: "(문) 그래프를 보고 우리 고장에서 나타난 변화를 쓰고, 그 변화가 주민 생활에 준 영향을 쓰시오. (3점)", ans: "S", opts: ["S", "C", "E", "G"],
     why: "그래프에 제목과 단위가 없어 무엇이 얼마나 변했는지 읽을 수 없습니다. 학생마다 그래프를 다르게 해석해 답안이 제각각이 됩니다.",
-    fix: "[자료: 우리 고장의 연도별 자동차 등록 대수 (단위: 천 대, 출처: ○○시 통계)]\n(문) 그래프를 보고 우리 고장에서 나타난 변화를 쓰고, 그 변화가 주민 생활에 준 영향을 쓰시오. (3점)" },
-  { subj: "사회", area: "형식", item: "[자료: “우리 시 청소년의 70%가 하루 3시간 넘게 스마트폰을 쓴다.” (출처·조사 시기 표시 없음)]\n(문) 자료를 근거로 우리 시 청소년의 생활 문제를 한 가지 쓰고, 해결 방법을 제안하시오. (3점)", ans: "S", opts: ["S", "C", "E", "G"],
+    fixMat: MAT.carTitle, fix: "그래프에 제목, 단위, 출처를 넣습니다." },
+  { subj: "사회", mat: MAT.phoneNoSrc, area: "형식", item: "(문) 자료를 근거로 우리 시 청소년의 생활 문제를 한 가지 쓰고, 해결 방법을 제안하시오. (3점)", ans: "S", opts: ["S", "C", "E", "G"],
     why: "통계 자료에 출처와 조사 시기가 없습니다. 자료를 믿을 수 있는지 판단할 수 없고, 출처를 밝혀 자료를 활용하는 사회과의 기본 태도와도 어긋납니다.",
-    fix: "[자료: “우리 시 청소년의 70%가 하루 3시간 넘게 스마트폰을 쓴다.” (출처: ○○시 청소년 생활 실태 조사, 2025년)]" },
+    fixMat: MAT.phoneSrc, fix: "자료에 출처와 조사 시기를 밝힙니다." },
   { subj: "사회", area: "형식", item: "(문) 우리 지역의 문제를 해결하기 위해 주민들이 참여할수 있는 방법을 두가지 쓰고, 각 방법의 장점을 쓰시요. (4점)", ans: "T", opts: ["T", "C", "E", "G"],
     why: "‘참여할수’, ‘두가지’는 띄어 써야 하고, ‘쓰시요’는 ‘쓰시오’가 맞습니다. 평가지의 오류는 문항에 대한 신뢰를 떨어뜨리고 학생의 맞춤법 학습에도 좋지 않습니다.",
     fix: "(문) 우리 지역의 문제를 해결하기 위해 주민들이 참여할 수 있는 방법을 두 가지 쓰고, 각 방법의 장점을 쓰시오. (4점)" },
-  { subj: "사회", area: "형식", item: "[자료 (가): 옛날 교통수단 그림 / 자료 (나): 오늘날 교통수단 그림]\n(문) 자료 (가)와 (다)를 비교하여 교통수단의 발달로 달라진 생활 모습을 쓰시오. (3점)", ans: "V", opts: ["V", "C", "G", "Q"],
+  { subj: "사회", mat: MAT.trans, area: "형식", item: "(문) 자료 (가)와 (다)를 비교하여 교통수단의 발달로 달라진 생활 모습을 쓰시오. (3점)", ans: "V", opts: ["V", "C", "G", "Q"],
     why: "발문은 (다)를 가리키지만 자료에는 (가)와 (나)만 있습니다. 학생은 어떤 자료를 비교해야 할지 혼란스러워합니다.",
     fix: "(문) 자료 (가)와 (나)를 비교하여 교통수단의 발달로 달라진 생활 모습을 쓰시오. (3점)" },
-  { subj: "사회", area: "형식", item: "(문) 옛날과 오늘날의 의생활, 식생활, 주생활 모습을 비교하여 달라진 점을 각각 한 가지씩 쓰고, 그 까닭을 쓰시오. (6점)\n답: ______________________ (한 줄)", ans: "W", opts: ["W", "C", "E", "G"],
+  { subj: "사회", area: "형식", item: "(문) 옛날과 오늘날의 의생활, 식생활, 주생활 모습을 비교하여 달라진 점을 각각 한 가지씩 쓰고, 그 까닭을 쓰시오. (6점)", matAfter: MAT.answerLine, ans: "W", opts: ["W", "C", "E", "G"],
     why: "여섯 가지 내용을 쓰게 하면서 답란은 한 줄뿐입니다. 학생은 답란에 맞추어 짧게 쓰거나 일부를 빠뜨리게 됩니다.",
     fix: "답란을 의생활·식생활·주생활별로 ‘달라진 점’과 ‘까닭’을 쓰는 표로 바꿉니다." },
-  { subj: "사회", area: "형식", item: "[자료: 국가유산청 누리집의 ‘국가유산 보호 활동’ 안내문]\n(문) 자료를 보고 우리 고장의 문화재를 보호하기 위해 어린이가 할 수 있는 일을 두 가지 쓰시오. (2점)", ans: "Y", opts: ["Y", "C", "E", "G"],
+  { subj: "사회", mat: MAT.heritage, area: "형식", item: "(문) 자료를 보고 우리 고장의 문화재를 보호하기 위해 어린이가 할 수 있는 일을 두 가지 쓰시오. (2점)", ans: "Y", opts: ["Y", "C", "E", "G"],
     why: "자료는 ‘국가유산’, 발문은 ‘문화재’라고 써서 같은 대상을 다르게 부릅니다. 학생은 둘이 같은 것인지 헷갈릴 수 있습니다.",
     fix: "(문) 자료를 보고 우리 고장의 국가유산을 보호하기 위해 어린이가 할 수 있는 일을 두 가지 쓰시오. (2점)" }
 ];
@@ -767,7 +887,7 @@ function clinic(order, pos, correct, rec) {
     <div class="stepbar"><span class="tag g">${ic("check")}${correct}</span><div class="bar"><i style="width:${(pos / total) * 100}%"></i></div><span class="cnt">${pos + 1} / ${total}</span></div>
     <div class="card">
       <h2>가장 먼저 고쳐야 할 점은?</h2>
-      <div class="box">${nl(c.item)}</div>
+      ${c.mat || ""}<div class="box">${nl(c.item)}</div>${c.matAfter || ""}
       <div class="mt16" id="opts">${opts.map((k) => `<button class="choice" data-k="${k}"><span class="rd"></span><span>${esc(TYPES[k])}</span><span class="mark">${ic(k === c.ans ? "check" : "x")}</span></button>`).join("")}</div>
       <div id="result"></div>
     </div></div>`;
@@ -781,7 +901,7 @@ function clinic(order, pos, correct, rec) {
     $("result").innerHTML = `
       <div class="mt16"><span class="tag ${area === "형식" ? "o" : "n"}">${area} 검토</span></div>
       <div class="call ${ok ? "ok" : "no"} mt8"><b>${ok ? "정답입니다" : "다시 살펴보세요"}</b>${esc(c.why)}</div>
-      <div class="lab mt16">수정 예시</div><div class="box model">${nl(c.fix)}</div>
+      <div class="lab mt16">수정 예시</div>${c.fixMat || ""}<div class="box model">${nl(c.fix)}</div>
       <div class="row end mt16"><button class="btn pri" id="next">${pos === total - 1 ? "결과 보기" : "다음"}${ic("arrowR")}</button></div>`;
     $("next").onclick = () => { const r = rec[area] || [0, 0]; clinic(order, pos + 1, correct + (ok ? 1 : 0), { ...rec, [area]: [r[0] + (ok ? 1 : 0), r[1] + 1] }); window.scrollTo(0, 0); };
   }));
