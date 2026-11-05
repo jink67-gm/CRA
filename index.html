@@ -280,13 +280,14 @@ const SETS = [
         [0, "무응답"]
       ],
       v2: [
-        [4, "문제점 2가지(토의 생략, 소수 의견 무시)를 모두 찾고, 2가지 모두 고칠 방법과 까닭을 함께 쓴 경우"],
-        [3, "문제점 2가지를 모두 찾고, 그중 1가지만 고칠 방법과 까닭을 함께 쓴 경우"],
-        [2, "· 문제점 2가지를 모두 찾았으나, 고칠 방법과 까닭을 함께 쓴 것이 없는 경우\n· 문제점을 1가지만 찾고, 그 문제점의 고칠 방법과 까닭을 함께 쓴 경우"],
-        [1, "문제점을 1가지만 찾고, 고칠 방법이나 까닭이 빠진 경우"],
+        [4, "문제점 2가지(토의 생략, 소수 의견 무시)를 모두 찾고, 2가지 모두 알맞은 고칠 방법과 올바른 까닭을 쓴 경우"],
+        [3, "문제점 2가지를 모두 찾고, 그중 1가지에 대해서만 알맞은 고칠 방법과 올바른 까닭을 쓴 경우"],
+        [2, "· 문제점 2가지를 모두 찾았으나, 알맞은 고칠 방법과 올바른 까닭을 함께 쓴 것이 없는 경우\n· 문제점을 1가지만 찾고, 그 문제점의 알맞은 고칠 방법과 올바른 까닭을 쓴 경우"],
+        [1, "문제점을 1가지만 찾고, 고칠 방법이나 까닭이 빠지거나 바르지 않은 경우"],
         [0, "무응답, 문항과 관련 없는 내용, 또는 다수결로 정한 것 자체를 문제점으로 쓴 경우"]
       ]
     },
+    v2note: "· 알맞은 고칠 방법: 그 문제점을 해결하는 구체적인 행동 (예: 투표 전에 토의하기, 지수의 의견 듣기)\n· 올바른 까닭: 민주적 의사 결정의 원리(대화와 타협, 소수 의견 존중)와 연결한 설명\n· 문제점과 맞지 않는 방법, 원리와 관계없는 까닭(예: 놀이공원이 더 재미있어서)은 인정하지 않음",
     issues: [
       "‘정확히’, ‘논리적으로’, ‘대체로 적절하게’, ‘다소 부족’이 채점자마다 다르게 해석됩니다.",
       "문제점을 몇 가지 찾아야 몇 점인지 정해져 있지 않아, 1가지만 길게 쓴 답안이 높은 점수를 받기도 합니다.",
@@ -762,7 +763,7 @@ function hostView(code) {
       <p class="muted sm-t" style="margin:14px 0 6px">${esc(set.achieve)}</p>
       <div class="box">${nl(set.question)}</div>
       <div class="box src mt8">${nl(set.context)}</div>
-      <div class="two mt16"><div><div class="lab">초안 기준표</div>${rubricTable(set.rubric.v1)}</div><div><div class="lab">다듬은 기준표</div>${rubricTable(set.rubric.v2)}</div></div>
+      <div class="two mt16"><div><div class="lab">초안 기준표</div>${rubricTable(set.rubric.v1)}</div><div><div class="lab">다듬은 기준표</div>${rubricTable(set.rubric.v2)}${set.v2note ? `<div class="call mt8" style="font-size:13.5px">${nl(set.v2note)}</div>` : ""}</div></div>
       <div class="lab mt16">초안 기준표의 문제점</div><ul style="margin:0;padding-left:18px;font-size:14.5px">${set.issues.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
     </details>`;
     $app.querySelectorAll("details[data-d]").forEach((d) => d.addEventListener("toggle", () => { const k = d.dataset.d === "info" ? "info" : +d.dataset.d; d.open ? openDetails.add(k) : openDetails.delete(k); }));
@@ -827,6 +828,7 @@ function playView(code) {
       <div class="ans mt8">${nl(a.text)}</div>
       <div class="lab mt20">점수</div>
       ${set.rubric[room.rubric].map(([p, t]) => `<button class="opt ${pick === p ? "on" : ""}" data-p="${p}"><span class="pt">${p}점</span><span class="tx">${nl(t)}</span></button>`).join("")}
+      ${room.rubric === "v2" && set.v2note ? `<div class="call mt8" style="font-size:14px">${nl(set.v2note)}</div>` : ""}
       <textarea id="reason" class="mt8" maxlength="120" placeholder="채점 근거 (선택)" style="min-height:64px">${esc(draft)}</textarea>
       ${room.revealed && mine[idx] !== undefined ? `<div class="call mt12"><b>기준 점수 ${a.gold}점</b>${esc(a.why)}</div>` : ""}
       ${room.revealed && room.round === 1 ? `<details class="more"><summary>초안 기준표의 문제점</summary><ul>${set.issues.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></details>` : ""}
