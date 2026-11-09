@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서·논술형 평가 연습실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFAF2; --card:#fff; --ink:#1F2F3B; --navy:#12314A; --teal:#168C88; --tealD:#0F716D; --tealL:#E6F3F2;
+  --orange:#EF8B4D; --orangeD:#D9702F; --orangeL:#FDEEE3; --line:#ECE3D6; --line2:#D9CDBC; --muted:#6B7A84;
+  --red:#CF4B3B; --redL:#FBEAE7; --green:#23905F; --greenL:#E7F5EE; --soft:#FAF6EF;
+  --sh:0 1px 2px rgba(18,49,74,.04),0 6px 20px rgba(18,49,74,.05);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans KR',system-ui,sans-serif;line-height:1.6;word-break:keep-all}
+button{font-family:inherit;cursor:pointer;color:inherit}
+.ic{width:18px;height:18px;flex:none}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,250,242,.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .in{max-width:1040px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:-.3px;border:none;background:none;padding:0;color:var(--ink)}
+.brand .mk{width:32px;height:32px;border-radius:10px;background:var(--teal);color:#fff;display:grid;place-items:center}
+.brand .mk .ic{width:18px;height:18px}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 20px 80px}
+.narrow{max-width:760px;margin:0 auto}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 20px;border-radius:12px;border:1.5px solid transparent;font-size:15px;font-weight:700;background:var(--navy);color:#fff;transition:background .15s,border-color .15s,color .15s,transform .05s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible,.opt:focus-visible,.tile:focus-visible,.dot:focus-visible,.choice:focus-visible,.seg button:focus-visible{outline:3px solid rgba(22,140,136,.35);outline-offset:2px}
+.btn.pri{background:var(--teal)} .btn.pri:hover{background:var(--tealD)}
+.btn.acc{background:var(--orange)} .btn.acc:hover{background:var(--orangeD)}
+.btn.line{background:#fff;color:var(--ink);border-color:var(--line2)} .btn.line:hover{border-color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--muted)} .btn.ghost:hover{color:var(--ink);background:rgba(18,49,74,.06)}
+.btn.sm{height:38px;padding:0 14px;font-size:14px;border-radius:10px}
+.btn.icon{width:42px;padding:0}
+.btn.sm.icon{width:38px}
+.btn.block{width:100%}
+.btn.armed{background:var(--red)!important}
+.btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.btn.line:disabled:hover{border-color:var(--line2)}
+
+/* layout & text */
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:var(--sh)}
+h1{font-size:26px;letter-spacing:-.5px;margin:4px 0 20px}
+h2{font-size:19px;letter-spacing:-.3px;margin:0 0 14px}
+.lab{font-size:13px;font-weight:700;color:var(--muted);margin:0 0 8px}
+.muted{color:var(--muted)} .sm-t{font-size:13.5px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+.end{justify-content:flex-end}
+.grow{flex:1}
+.center{text-align:center}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--tealL);color:var(--tealD);white-space:nowrap}
+.tag .ic{width:14px;height:14px}
+.tag.o{background:var(--orangeL);color:var(--orangeD)} .tag.n{background:#EDF0F3;color:var(--navy)}
+.tag.r{background:var(--redL);color:var(--red)} .tag.g{background:var(--greenL);color:var(--green)}
+.box{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px;white-space:pre-wrap;font-size:16px}
+.box.src{font-size:14px;line-height:1.75}
+.box.white{background:#fff}
+.box.model{background:var(--tealL);border-color:#CBE5E3}
+.call{border-radius:12px;padding:12px 14px;font-size:14.5px;background:var(--orangeL);color:#6B3A1A;white-space:pre-wrap}
+.call.ok{background:var(--greenL);color:#175C3D} .call.no{background:var(--redL);color:#7A2A20}
+.call b{display:block;margin-bottom:3px;font-size:15px}
+.divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;font-weight:700;margin:22px 0 12px}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* progress */
+.stepbar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.bar{flex:1;height:6px;background:#EFE7DA;border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--teal);border-radius:99px;transition:width .3s}
+.cnt{font-size:14px;font-weight:700;color:var(--muted);white-space:nowrap}
+
+/* home */
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:820px){.tiles{grid-template-columns:1fr}}
+.tile{position:relative;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--sh);transition:transform .15s,border-color .15s;display:flex;flex-direction:column;gap:6px;min-height:200px}
+.tile:hover{transform:translateY(-3px);border-color:var(--teal)}
+.tile.o:hover{border-color:var(--orange)}
+.tile .ib{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:var(--tealL);color:var(--teal);margin-bottom:12px}
+.tile .ib .ic{width:26px;height:26px}
+.tile.o .ib{background:var(--orangeL);color:var(--orange)}
+.tile h3{margin:0;font-size:20px;letter-spacing:-.4px}
+.tile p{margin:0;color:var(--muted);font-size:14.5px}
+.tile .tag{position:absolute;right:20px;top:24px}
+.tile .go{position:absolute;right:22px;bottom:22px;color:var(--line2);transition:color .15s,transform .15s}
+.tile:hover .go{color:var(--teal);transform:translateX(3px)}
+.tile.o:hover .go{color:var(--orange)}
+@media(max-width:820px){.tile{min-height:auto}}
+
+/* inputs */
+input[type=text],textarea{width:100%;font-family:inherit;font-size:16px;border:1.5px solid var(--line2);border-radius:12px;padding:12px 14px;background:#fff;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(22,140,136,.15)}
+input::placeholder,textarea::placeholder{color:#A5ADB3}
+textarea{min-height:100px;resize:vertical;line-height:1.6}
+input.code{font-size:32px;font-weight:800;letter-spacing:14px;text-align:center;padding:12px;height:72px}
+input.code::placeholder{letter-spacing:0;font-size:17px;font-weight:500}
+
+/* choice (radio-like) */
+.choice{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff;margin-bottom:8px;font-size:15.5px;transition:border-color .15s,background .15s,opacity .15s}
+.choice:hover:not(:disabled){border-color:var(--line2);background:var(--soft)}
+.choice .rd{width:20px;height:20px;border-radius:50%;border:2px solid var(--line2);flex:none;display:grid;place-items:center}
+.choice.on{border-color:var(--teal);background:var(--tealL)}
+.choice.on .rd{border-color:var(--teal)} .choice.on .rd::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--teal)}
+.choice .meta{font-size:13px;color:var(--muted);font-weight:500}
+.choice .mark{margin-left:auto;display:none}
+.choice.ok{border-color:var(--green);background:var(--greenL)} .choice.ok .rd{border-color:var(--green)} .choice.ok .mark{display:block;color:var(--green)}
+.choice.no{border-color:var(--red);background:var(--redL)} .choice.no .rd{border-color:var(--red)} .choice.no .mark{display:block;color:var(--red)}
+.choice.dim{opacity:.45}
+.choice.picked .rd::after{content:"";width:10px;height:10px;border-radius:50%;background:currentColor}
+.choice.picked.ok .rd{color:var(--green)} .choice.picked.no .rd{color:var(--red)}
+.choice:disabled{cursor:default;color:inherit}
+
+/* rubric table */
+table.rb{width:100%;border-collapse:separate;border-spacing:0;font-size:14.5px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table.rb th{background:var(--navy);color:#fff;font-weight:700;padding:9px 12px;text-align:left;font-size:13.5px}
+table.rb th:first-child{text-align:center}
+table.rb td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top;white-space:pre-wrap;background:#fff}
+table.rb td.pt{width:72px;text-align:center;font-weight:800;white-space:nowrap}
+table.rb tr.target td{background:var(--orangeL)}
+table.rb tr.target td.pt::after{content:"고칠 칸";display:block;font-size:11px;color:var(--orangeD);font-weight:800}
+
+/* score options (participant) */
+.opt{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:#fff;margin-bottom:8px;transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--line2)}
+.opt .pt{flex:none;width:54px;height:40px;border-radius:10px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:17px}
+.opt .tx{white-space:pre-wrap;font-size:15px;padding-top:7px}
+.opt.on{border-color:var(--teal);background:var(--tealL)} .opt.on .pt{background:var(--teal);border-color:var(--teal);color:#fff}
+
+/* answer dots */
+.dots{display:flex;gap:8px;flex-wrap:wrap}
+.dot{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line2);background:#fff;font-weight:700;font-size:14px;display:grid;place-items:center;color:var(--muted);transition:.15s}
+.dot:hover{border-color:var(--teal)}
+.dot.done{background:var(--teal);border-color:var(--teal);color:#fff}
+.dot.cur{box-shadow:0 0 0 3px rgba(22,140,136,.28);border-color:var(--teal);color:var(--teal)}
+.dot.done.cur{color:#fff}
+.ans{font-size:17px;line-height:1.8;padding:18px 20px;border-radius:14px;background:#fff;border:2px solid var(--teal);white-space:pre-wrap}
+
+/* host */
+.code-big{font-size:46px;font-weight:800;letter-spacing:8px;color:var(--teal);line-height:1}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.stat .k{font-size:12.5px;color:var(--muted);font-weight:700}
+.stat .v{font-size:22px;font-weight:800;letter-spacing:-.3px}
+.stat .v small{font-size:14px;color:var(--muted);font-weight:700}
+.seg{display:inline-flex;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{border:none;background:transparent;padding:0 14px;height:38px;border-radius:9px;font-weight:700;font-size:14px;color:var(--muted)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.acard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--sh)}
+.acard.split{border-color:#EFBFB6;box-shadow:0 0 0 2px var(--redL)}
+.acard .t{font-size:14.5px;white-space:pre-wrap;margin:8px 0 14px;color:#33434E}
+.hb{display:grid;grid-template-columns:36px 1fr 20px;gap:8px;align-items:center;font-size:13px;margin:5px 0}
+.hb .tr{height:12px;background:#F2ECE2;border-radius:6px;overflow:hidden}
+.hb .tr i{display:block;height:100%;background:var(--teal);border-radius:6px;transition:width .3s}
+.hb.gold .tr i{background:var(--orange)} .hb.gold>span:first-child{color:var(--orangeD);font-weight:800}
+.hb b{text-align:right}
+
+/* details */
+details.more{margin-top:10px}
+details.more>summary{list-style:none;cursor:pointer;font-size:14px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px;padding:4px 0;user-select:none}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::before{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin-right:2px}
+details.more[open]>summary::before{transform:rotate(45deg)}
+details.more>summary:hover{color:var(--ink)}
+details.more ul{margin:8px 0 0;padding-left:18px;font-size:14px}
+details.more li{margin:4px 0}
+details.card>summary{font-size:16px;color:var(--ink)}
+
+/* 자료 */
+.mat{position:relative;background:#fff;border:1.5px solid var(--line2);border-radius:14px;padding:26px 18px 16px;margin:6px 0 12px}
+.mat-h{position:absolute;top:-11px;left:14px;background:var(--navy);color:#fff;font-size:12.5px;font-weight:700;padding:2px 10px;border-radius:999px}
+.mat-svg{display:block;width:100%;max-width:460px;height:auto;margin:0 auto;font-family:inherit}
+.mat-cap{text-align:center;font-weight:700;font-size:14.5px;margin-bottom:8px}
+.mat-src{text-align:right;font-size:12px;color:var(--muted);margin-top:6px}
+.mat-src::before{content:"출처: "}
+.mat-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.mat-tb{border-collapse:collapse;margin:0 auto;font-size:13.5px}
+.mat-tb th,.mat-tb td{border:1px solid #CFC6B6;padding:5px 8px;text-align:center}
+.mat-tb th{background:#F2EDE3}
+.mat-news{font-size:14.5px;line-height:1.75}
+.mat-paper,.mat-org{font-size:12px;color:var(--muted);border-bottom:2px solid var(--ink);padding-bottom:4px;margin-bottom:8px}
+.mat-head{font-size:17px;font-weight:800;margin-bottom:6px;letter-spacing:-.3px}
+.mat-news p{margin:0 0 6px;text-indent:.6em}
+.mat-notice ul{margin:6px 0 0;padding-left:20px;font-size:14.5px}
+.mat-text{font-size:14.5px;line-height:1.8}
+.mat-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mat-cards div{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13.5px;display:flex;flex-direction:column;gap:2px}
+.mat-stat{display:flex;align-items:center;gap:16px;justify-content:center;font-size:15px;font-weight:700}
+.mat-big{font-size:42px;font-weight:800;color:#C0392B}
+.mat-pics{display:flex;justify-content:space-around;gap:10px;text-align:center}
+.mat-pics>div{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 4px}
+.mat-emo{font-size:34px;line-height:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.mat-pics span{font-size:13.5px;font-weight:700}
+.mat-ans{display:flex;align-items:flex-end;gap:8px;margin-top:10px;font-size:15px}
+.mat-ans span{flex:1;border-bottom:1.5px solid var(--ink);height:22px}
+/* 서술 검토 */
+.chk{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;margin-bottom:8px;cursor:pointer;font-size:15px;background:#fff}
+.chk input{width:18px;height:18px;margin-top:3px;accent-color:var(--teal);flex:none}
+.chk:has(input:checked){border-color:var(--teal);background:var(--tealL)}
+/* polish */
+.pgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.pside{position:sticky;top:76px;max-height:calc(100vh - 92px);overflow:auto;margin-bottom:0}
+@media(max-width:900px){.pgrid{grid-template-columns:1fr}.pside{position:static;max-height:none;margin-bottom:16px}}
+.sec{font-size:22px;font-weight:800;letter-spacing:-.4px;margin:0 0 12px;color:var(--ink)}
+mark.v{background:#FFD5BC;color:inherit;border-radius:4px;padding:0 2px}
+.keys{display:flex;flex-wrap:wrap;gap:8px}
+.keys span{display:inline-flex;align-items:center;gap:5px;font-size:13.5px;padding:5px 12px;border-radius:999px;border:1.5px solid var(--line2);background:#fff;color:var(--muted);font-weight:500;transition:.15s}
+.keys span.on{border-color:var(--green);background:var(--greenL);color:var(--green);font-weight:700}
+.keys .ic{width:14px;height:14px;display:none} .keys span.on .ic{display:block}
+.flag{font-size:13.5px;margin-top:8px;min-height:21px}
+
+/* misc */
+table.sum{width:100%;border-collapse:collapse;font-size:14.5px}
+table.sum td,table.sum th{border-bottom:1px solid var(--line);padding:11px 6px;text-align:left;vertical-align:middle}
+table.sum th{font-size:13px;color:var(--muted);font-weight:700}
+.big-num{font-size:56px;font-weight:800;letter-spacing:-1px;color:var(--teal);line-height:1.1}
+.big-ic{width:64px;height:64px;border-radius:50%;background:var(--tealL);color:var(--teal);display:grid;place-items:center;margin:0 auto 14px}
+.big-ic .ic{width:32px;height:32px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 20px;border-radius:999px;font-size:14px;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.hidden{display:none!important}
+@media(max-width:600px){.wrap{padding:20px 16px 64px}.top .in{padding:8px 16px}.card{padding:18px}h1{font-size:23px}.code-big{font-size:38px}}
+</style>
+<link rel="stylesheet" href="./peer.css">
+</head>
+<body>
+<header class="top"><div class="in">
+  <button class="brand" id="brand"><span class="mk"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="m13.5 6.5 4 4"/></svg></span>서·논술형 평가 연습실</button>
+  <button class="btn line sm" id="homeBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>홈</button>
+</div></header>
+<main class="wrap" id="app"></main>
+
+<script type="module">
+// =====================================================================
+// Firebase (실시간 모드에서만 사용, 연결 실패해도 개인 연습은 동작)
+// =====================================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyAJ-k0BBVZq-n9KQ8VaSiSGOAdYEJTecPo",
+  authDomain: "tjahstnf.firebaseapp.com",
+  projectId: "tjahstnf",
+  storageBucket: "tjahstnf.firebasestorage.app",
+  messagingSenderId: "326606815509",
+  appId: "1:326606815509:web:2c4c2df92901820909a91c",
+  measurementId: "G-BQ8Q0VG89F"
+};
+let db = null, firebaseApp = null, doc, getDoc, getDocs, setDoc, updateDoc, onSnapshot, collection, serverTimestamp, deleteDoc, writeBatch, Bytes;
+const fbReady = (async () => {
+  try {
+    const appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const fs = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+    ({ doc, getDoc, getDocs, setDoc, updateDoc, onSnapshot, collection, serverTimestamp, deleteDoc, writeBatch, Bytes } = fs);
+    firebaseApp = appMod.initializeApp(firebaseConfig);
+    db = fs.getFirestore(firebaseApp);
+  } catch (e) { console.warn("Firebase 로딩 실패", e); }
+})();
+
+// =====================================================================
+// 데이터 1: 실시간 채점 협의 세트
+//  - v1: 실제 초안에서 자주 보이는 형태의 기준표(문제점이 숨어 있음)
+//  - v2: 협의 후 다듬은 기준표, gold는 v2 기준 점수
+// =====================================================================
+const SETS = [
+  {
+    id: "decision", title: "6학년 사회 · 민주적 의사 결정", points: [4, 3, 2, 1, 0],
+    achieve: "평가요소(연습용): 민주적 의사 결정의 원리를 적용하여 회의 과정의 문제점을 찾고 고칠 방법 제안하기",
+    context: "6학년 1반 현장 체험 학습 장소 정하기 회의\n· 회장: “놀이공원과 박물관 중에서 정합시다. 시간이 없으니 토의는 생략하고 바로 손을 들어 정하겠습니다.”\n· 투표 결과: 놀이공원 15명, 박물관 11명\n· 지수: “박물관에 가면 사회 시간에 배운 내용을 직접 볼 수 있어요. 제 의견도 들어 주세요.”\n· 회장: “이미 결과가 나왔으니 소수 의견은 들을 필요가 없습니다. 놀이공원으로 결정합니다.”",
+    question: "<자료>의 회의에서 민주적 의사 결정 과정에 어긋나는 점을 두 가지 찾고, 각각을 어떻게 고치면 좋을지 그 까닭과 함께 쓰시오. (4점)",
+    rubric: {
+      v1: [
+        [4, "회의의 문제점을 정확히 찾고, 고칠 방법과 까닭을 논리적으로 쓴 경우"],
+        [3, "회의의 문제점을 찾고, 고칠 방법을 대체로 적절하게 쓴 경우"],
+        [2, "회의의 문제점을 찾았으나, 고칠 방법이나 까닭이 다소 부족한 경우"],
+        [1, "회의의 문제점을 일부만 찾은 경우"],
+        [0, "무응답"]
+      ],
+      v2: [
+        [4, "문제점 2가지(토의 생략, 소수 의견 무시)를 모두 찾고, 고칠 방법과 까닭을 올바르게 모두 쓴 경우"],
+        [3, "문제점 2가지를 모두 찾았으나, 고칠 방법과 까닭을 1가지만 올바르게 쓴 경우"],
+        [2, "· 문제점 2가지를 모두 찾았으나, 고칠 방법과 까닭을 쓰지 않거나 올바르게 쓰지 않은 경우\n· 문제점을 1가지만 찾고, 그 문제점의 고칠 방법과 까닭을 올바르게 쓴 경우"],
+        [1, "문제점을 1가지만 찾고, 고칠 방법이나 까닭이 빠지거나 바르지 않은 경우"],
+        [0, "무응답, 문항과 관련 없는 내용, 또는 다수결로 정한 것 자체를 문제점으로 쓴 경우"]
+      ]
+    },
+    v2note: "· 고칠 방법을 올바르게 쓴 경우: 그 문제점을 해결하는 구체적인 행동을 씀 (예: 투표 전에 토의하기, 지수의 의견 듣기)\n· 까닭을 올바르게 쓴 경우: 민주적 의사 결정의 원리(대화와 타협, 소수 의견 존중)와 연결하여 설명함\n· 문제점과 맞지 않는 방법, 원리와 관계없는 까닭(예: 놀이공원이 더 재미있어서)은 인정하지 않음",
+    issues: [
+      "‘정확히’, ‘논리적으로’, ‘대체로 적절하게’, ‘다소 부족’이 채점자마다 다르게 해석됩니다.",
+      "문제점을 몇 가지 찾아야 몇 점인지 정해져 있지 않아, 1가지만 길게 쓴 답안이 높은 점수를 받기도 합니다.",
+      "‘고칠 방법’과 ‘까닭’ 중 무엇이 빠지면 몇 점인지 정해져 있지 않습니다.",
+      "다수결로 정한 것 자체를 문제로 본 답안을 넣을 칸이 없습니다(포괄성)."
+    ],
+    answers: [
+      { text: "토의를 생략한 것과 소수 의견을 무시한 것이 문제이다. 민주적인 회의에서는 대화와 타협, 소수 의견 존중이 중요하기 때문이다.", gold: 2,
+        why: "문제점 2가지를 찾고 까닭(민주적 원리)은 썼지만, 어떻게 고칠지는 쓰지 않았다. 핵심 용어가 들어 있어 3~4점을 주기 쉬운 답안이다." },
+      { text: "회장이 소수 의견을 무시했다. 민주주의에서는 다수결로 정하더라도 소수의 의견을 존중해야 한다. 소수의 의견이 옳을 수도 있고, 무시당한 사람은 결정에 따르기 싫어질 수 있기 때문이다. 그래서 회장은 지수의 말을 끝까지 듣고, 박물관과 놀이공원의 좋은 점을 함께 비교해 보자고 했어야 한다. 그러면 반 친구 모두가 만족하는 결정을 할 수 있었을 것이다.", gold: 2,
+        why: "문제점은 1가지(소수 의견 무시)만 찾았고, 그 1가지에 대해서는 고칠 방법과 까닭을 모두 썼다. 길고 논리적이어서 4점, ‘일부만 찾음’으로 보아 1점까지 판단이 크게 갈린다." },
+      { text: "토의를 하지 않고 바로 투표했다. 충분히 이야기를 나누어야 서로의 생각을 알고 더 좋은 결정을 할 수 있으므로 투표 전에 토의를 해야 한다. 또 지수의 의견을 무시했다. 소수 의견도 존중해야 모두가 결정을 받아들일 수 있으므로 지수의 의견을 듣고 다시 생각해 보아야 한다.", gold: 4,
+        why: "문제점 2가지를 모두 찾고, 각각 고칠 방법(투표 전 토의, 지수의 의견 듣기)과 까닭을 함께 썼다." },
+      { text: "첫째, 토의 없이 바로 손을 들었다. 토의를 먼저 해야 한다.\n둘째, 지수의 의견을 듣지 않았다. 지수의 의견도 들어야 한다.", gold: 2,
+        why: "문제점 2가지와 고칠 방법은 썼지만 까닭이 하나도 없다. ‘대체로 적절’로 보아 3점, ‘까닭 부족’으로 보아 2점으로 갈린다." },
+      { text: "다수결로 정한 것이 문제이다. 다수결은 많은 사람의 의견만 따르므로 소수에게 불공평하다. 모두가 찬성할 때까지 회의를 계속해야 한다.", gold: 0,
+        why: "다수결 자체를 문제로 보았다(오개념). 다수결은 민주적 의사 결정 방법이며, 문제는 토의 생략과 소수 의견 무시이다. ‘소수’를 언급해 부분 점수를 주기 쉽지만 초안 기준표에는 넣을 칸이 없다." },
+      { text: "회장이 시간이 없다고 토의를 생략했다. 투표하기 전에 놀이공원과 박물관의 좋은 점을 서로 이야기하는 시간을 가져야 한다. 그래야 친구들이 더 잘 알고 투표할 수 있기 때문이다. 또 지수의 말을 무시한 것도 잘못이다.", gold: 3,
+        why: "문제점 2가지를 찾았고, 토의 생략에 대해서만 고칠 방법과 까닭을 썼다. 소수 의견 무시는 찾기만 했다." }
+    ]
+  }
+];
+
+// ---------- 자료 그리기 도우미 ----------
+const M = {
+  box: (label, inner) => `<div class="mat"><span class="mat-h">${label}</span>${inner}</div>`,
+  src: (t) => `<div class="mat-src">${t}</div>`,
+  bars({ title = "", unit = "", labels, values, ticks, src = "", color = "#5B8DB8" }) {
+    const W = 460, H = 240, L = 44, R = 12, T = (title ? 34 : 16) + (unit ? 12 : 0), B = 30;
+    const max = ticks[ticks.length - 1], ph = H - T - B, pw = W - L - R, bw = Math.min(46, (pw / labels.length) * 0.55);
+    const y = (v) => T + ph - (v / max) * ph;
+    let g = "";
+    ticks.forEach((t) => { g += `<line x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}" stroke="#E5E0D8"/><text x="${L - 6}" y="${y(t) + 4}" text-anchor="end" font-size="11" fill="#555">${t}</text>`; });
+    labels.forEach((lb, i) => {
+      const cx = L + (pw / labels.length) * (i + 0.5);
+      g += `<rect x="${cx - bw / 2}" y="${y(values[i])}" width="${bw}" height="${T + ph - y(values[i])}" fill="${color}" rx="2"/><text x="${cx}" y="${H - 10}" text-anchor="middle" font-size="11.5" fill="#333">${lb}</text>`;
+    });
+    g += `<line x1="${L}" x2="${W - R}" y1="${T + ph}" y2="${T + ph}" stroke="#888"/>`;
+    if (title) g += `<text x="${W / 2}" y="18" text-anchor="middle" font-size="14" font-weight="700" fill="#222">${title}</text>`;
+    if (unit) g += `<text x="${L - 6}" y="${T - 10}" text-anchor="end" font-size="10.5" fill="#555">${unit}</text>`;
+    return `<svg viewBox="0 0 ${W} ${H}" class="mat-svg">${g}</svg>${src ? M.src(src) : ""}`;
+  },
+  pyramid(year, vals) {
+    const ages = ["80+", "70대", "60대", "50대", "40대", "30대", "20대", "10대", "0~9"];
+    const W = 260, H = 214, C = W / 2, G = 22, T = 28, rh = 20, k = 7.2;
+    let g = `<text x="${C}" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#222">${year}년</text>`;
+    g += `<text x="14" y="16" font-size="11" fill="#4A78A8">남</text><text x="${W - 14}" y="16" text-anchor="end" font-size="11" fill="#C0605A">여</text>`;
+    ages.forEach((a, i) => {
+      const w = (vals[8 - i] / 2) * k, yy = T + i * rh;
+      g += `<rect x="${C - G - w}" y="${yy}" width="${w}" height="${rh - 4}" fill="#7FA6CC"/><rect x="${C + G}" y="${yy}" width="${w}" height="${rh - 4}" fill="#E39B94"/><text x="${C}" y="${yy + 12}" text-anchor="middle" font-size="9.5" fill="#444">${a}</text>`;
+    });
+    return `<svg viewBox="0 0 ${W} ${H}" class="mat-svg" style="max-width:260px">${g}</svg>`;
+  },
+  map({ compass = true, scale = false, title = "우리 고장 지도" }) {
+    const W = 360, H = 250;
+    let g = `<rect x="0" y="0" width="${W}" height="${H}" fill="#F7F4EC"/>`;
+    g += `<path d="M0 125 H${W} M180 0 V${H} M0 40 L${W} 210" stroke="#D8D2C4" stroke-width="10" fill="none"/>`;
+    const place = (x, y, name, color) => `<rect x="${x - 34}" y="${y - 15}" width="68" height="30" rx="6" fill="${color}" stroke="#555" stroke-width="0.8"/><text x="${x}" y="${y + 4.5}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#222">${name}</text>`;
+    g += place(180, 125, "학교", "#FFE7A8") + place(70, 60, "시청", "#CFE3F5") + place(290, 62, "우체국", "#F6D3CF") + place(290, 195, "병원", "#DDEFD9") + place(70, 195, "도서관", "#E7DDF3");
+    if (compass) g += `<g transform="translate(330,32)"><circle r="17" fill="#fff" stroke="#888"/><path d="M0 -14 L5 0 L0 -3 L-5 0 Z" fill="#C0392B"/><path d="M0 14 L5 0 L0 3 L-5 0 Z" fill="#999"/><text y="-19" text-anchor="middle" font-size="10" font-weight="700">북</text></g>`;
+    if (scale) g += `<g transform="translate(16,232)"><line x1="0" x2="80" y1="0" y2="0" stroke="#222" stroke-width="2"/><line x1="0" x2="0" y1="-4" y2="4" stroke="#222"/><line x1="40" x2="40" y1="-3" y2="3" stroke="#222"/><line x1="80" x2="80" y1="-4" y2="4" stroke="#222"/><text x="0" y="-7" font-size="9.5">0</text><text x="36" y="-7" font-size="9.5">100</text><text x="72" y="-7" font-size="9.5">200m</text></g>`;
+    return `<div class="mat-cap">${title}</div><svg viewBox="0 0 ${W} ${H}" class="mat-svg" style="max-width:360px">${g}</svg>`;
+  },
+  river() {
+    const W = 460, H = 210;
+    let g = `<rect width="${W}" height="${H}" fill="#F7F4EC"/><path d="M380 0 Q360 105 390 ${H} H${W} V0 Z" fill="#BFDDF2"/><text x="425" y="110" font-size="13" fill="#2C6E9B" font-weight="700">바다</text>`;
+    g += `<path d="M10 150 L45 70 L80 150 Z M55 150 L95 55 L135 150 Z" fill="#B9C9A6" stroke="#7E9465"/><text x="58" y="172" font-size="11.5" fill="#556B3F">산지</text>`;
+    g += `<path d="M95 100 C150 95 170 140 230 130 S320 90 385 110" stroke="#5AA0D6" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+    g += `<ellipse cx="320" cy="150" rx="55" ry="24" fill="#E8E2B8"/><text x="300" y="183" font-size="11.5" fill="#7A6E2E">넓은 평야</text>`;
+    const city = (x, y, k) => `<circle cx="${x}" cy="${y}" r="13" fill="#fff" stroke="#C0392B" stroke-width="2"/><text x="${x}" y="${y + 4.5}" text-anchor="middle" font-size="12.5" font-weight="800" fill="#C0392B">${k}</text>`;
+    g += city(118, 78, "가") + city(205, 108, "나") + city(345, 128, "다");
+    g += `<text x="105" y="30" font-size="11" fill="#666">← 상류</text><text x="330" y="30" font-size="11" fill="#666">하류 →</text>`;
+    return `<div class="mat-cap">강 주변 도시의 위치</div><svg viewBox="0 0 ${W} ${H}" class="mat-svg">${g}</svg>`;
+  },
+  table(head, rows, cap = "", src = "") {
+    return `${cap ? `<div class="mat-cap">${cap}</div>` : ""}<table class="mat-tb"><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</table>${src ? M.src(src) : ""}`;
+  },
+  news(paper, head, paras) {
+    return `<div class="mat-news"><div class="mat-paper">${paper}</div><div class="mat-head">${head}</div>${paras.map((p) => `<p>${p}</p>`).join("")}</div>`;
+  },
+  notice(org, title, items) {
+    return `<div class="mat-notice"><div class="mat-org">${org}</div><div class="mat-head">${title}</div><ul>${items.map((i) => `<li>${i}</li>`).join("")}</ul></div>`;
+  },
+  stat(big, text, src = "") {
+    return `<div class="mat-stat"><div class="mat-big">${big}</div><div>${text}</div></div>${src ? M.src(src) : ""}`;
+  },
+  pics(items) {
+    return `<div class="mat-pics">${items.map(([e, n]) => `<div><div class="mat-emo">${e}</div><span>${n}</span></div>`).join("")}</div>`;
+  },
+  gama: `<svg viewBox="0 0 64 48" width="44" height="34"><path d="M10 18 L32 6 L54 18 Z" fill="#B5543C"/><rect x="16" y="18" width="32" height="20" fill="#E9C88A" stroke="#8A5A2B"/><rect x="27" y="23" width="10" height="11" fill="#8A5A2B"/><line x1="2" y1="34" x2="62" y2="34" stroke="#6B4423" stroke-width="3"/></svg>`
+};
+const PY1970 = [26.2, 22.9, 16.1, 12.2, 9.4, 6.5, 4.3, 1.9, 0.5];
+const PY2020 = [7.6, 9.4, 13.2, 13.4, 16.0, 16.6, 12.6, 7.2, 4.0];
+const pyrPair = (a, b) => `<div class="mat-cap">연령별 인구 구성(%)</div><div class="mat-row">${M.pyramid(a[0], a[1])}${b ? M.pyramid(b[0], b[1]) : ""}</div>${M.src("통계청 자료를 바탕으로 단순화함")}`;
+const MAT = {
+  trash: M.box("자료", M.table(["월", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"], [["배출량", 42, 40, 41, 43, 48, 45, 52, 55, 61, 47, 44, 50]], "우리 마을의 월별 쓰레기 배출량 (단위: 톤)", "○○동 행정복지센터, 2025년")),
+  pyr: M.box("자료", pyrPair(["1970", PY1970], ["2020", PY2020])),
+  incin: M.box("자료", M.news("○○일보 | 2025년 9월 3일", "○○시, 주민 투표로 쓰레기 소각장 위치 결정", ["○○시는 새 쓰레기 소각장의 위치를 주민 투표로 정했다고 밝혔다. 시는 후보지 세 곳을 놓고 지난 두 달 동안 동네마다 주민 설명회를 열어 소각장의 안전성과 환경 대책을 설명했다.", "또 시청 누리집에 의견 게시판을 열어 주민 1,200여 명의 의견을 모았다. 지난달 열린 주민 투표에는 주민 절반 이상이 참여하였고, 그 결과에 따라 위치가 정해졌다.", "한 주민은 “설명회와 게시판에서 궁금한 점을 직접 물을 수 있어서 결과를 받아들이기 쉬웠다.”라고 말했다."])),
+  mapScale: M.box("자료", M.map({ compass: true, scale: true, title: "학교 주변 지도" })),
+  mapNoCompass: M.box("자료", M.map({ compass: false })),
+  mapCompass: M.box("자료", M.map({ compass: true })),
+  age2020: M.box("자료", M.bars({ title: "2020년 우리나라의 연령별 인구 구성", unit: "(%)", labels: ["0~9", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80+"], values: PY2020, ticks: [5, 10, 15, 20], src: "통계청 자료를 바탕으로 단순화함" })),
+  sejong: M.box("자료", `<div class="mat-text"><b>세종 대왕의 업적</b><br>세종 대왕은 백성이 쉽게 익혀 쓸 수 있도록 훈민정음을 만들었다. 또 장영실 등과 함께 비의 양을 재는 측우기와 시간을 알려 주는 자격루를 만들어 농사에 도움을 주었다. 우리 땅의 기후에 맞는 농사법을 모아 『농사직설』을 펴내기도 하였다.</div>`),
+  gunPop: M.box("자료", M.bars({ title: "○○군의 인구 변화", unit: "(천 명)", labels: ["2015", "2017", "2019", "2021", "2023", "2025"], values: [58, 55, 52, 49, 46, 43], ticks: [20, 40, 60], src: "○○군청 통계" })),
+  river: M.box("자료", M.river()),
+  parkNews: M.box("자료", M.news("○○신문 | 2025년 8월 20일", "주말마다 쓰레기로 몸살 앓는 ○○ 공원", ["여름철 주말이면 ○○ 공원 곳곳에 음식 포장 용기와 일회용 컵이 쌓인다. 공원 이용객은 크게 늘었지만 쓰레기통은 입구에 두 개뿐이다.", "공원을 찾은 한 시민은 “쓰레기통을 찾기 어려워 벤치에 두고 가는 사람이 많다.”라고 말했다. 시청은 쓰레기를 치우는 데 해마다 더 많은 예산을 쓰고 있다."])),
+  agency: M.box("자료", `<div class="mat-cap">우리 고장의 공공 기관 안내</div><div class="mat-cards">${[["시청", "주민 생활에 필요한 시설을 만들고, 고장의 여러 일을 계획하고 처리합니다."], ["소방서", "불이 났을 때 불을 끄고, 위험에 처한 사람을 구조합니다."], ["경찰서", "사람들의 안전을 지키고, 교통질서를 바로잡습니다."], ["보건소", "예방 접종을 하고, 주민의 건강을 돌봅니다."]].map(([n, t]) => `<div><b>${n}</b><span>${t}</span></div>`).join("")}</div>`),
+  carNoTitle: M.box("자료", M.bars({ labels: ["2000", "2010", "2020"], values: [12, 21, 28], ticks: [10, 20, 30] })),
+  carTitle: M.box("자료", M.bars({ title: "우리 고장의 연도별 자동차 등록 대수", unit: "(천 대)", labels: ["2000", "2010", "2020"], values: [12, 21, 28], ticks: [10, 20, 30], src: "○○시 통계, 2021년" })),
+  phoneNoSrc: M.box("자료", M.stat("70%", "우리 시 청소년의 70%가<br>하루 3시간 넘게 스마트폰을 쓴다.")),
+  phoneSrc: M.box("자료", M.stat("70%", "우리 시 청소년의 70%가<br>하루 3시간 넘게 스마트폰을 쓴다.", "○○시 청소년 생활 실태 조사, 2025년")),
+  trans: M.box("자료 (가)", M.pics([[M.gama, "가마"], ["🛶", "나룻배"], ["🐎", "말"]])) + M.box("자료 (나)", M.pics([["🚌", "버스"], ["🚄", "고속 열차"], ["✈️", "비행기"]])),
+  answerLine: `<div class="mat-ans"><b>답:</b><span></span></div>`,
+  heritage: M.box("자료", M.notice("국가유산청", "국가유산 보호 활동 안내", ["국가유산에 낙서를 하거나 함부로 만지지 않아요.", "관람할 때에는 정해진 길로만 다녀요.", "주변에 쓰레기를 버리지 않아요.", "국가유산이 훼손된 것을 보면 관리 기관에 알려요."]))
+};
+
+// =====================================================================
+// 데이터 2: 문항 검토하기 (사회과 문항, 정답 1개, 보기 4개)
+// =====================================================================
+const TYPES = {
+  A: "단순 기억·재생 수준의 사고만 요구함",
+  B: "학생이 써야 할 내용(답안 요소)이 분명하지 않음",
+  C: "논쟁적 주제에서 한쪽 입장만 쓰게 함",
+  D: "응답할 개수나 범위가 정해져 있지 않음",
+  E: "질문 속에 정답이 드러나 있음",
+  G: "학생 수준에 맞지 않는 어휘를 사용함",
+  H: "제시 자료를 읽지 않아도 답할 수 있음",
+  I: "제시문을 그대로 옮겨 써도 답이 됨",
+  J: "평가요소가 요구하는 행동과 문항이 어긋남",
+  K: "제시 자료가 부족하거나 잘못되어 답을 쓸 수 없음",
+  M: "배점에 비해 요구하는 과제가 지나치게 많음",
+  N: "서로 관련 없는 내용을 한 문항에 묶어 물음",
+  P: "학생 개인이나 가정의 사적인 정보를 드러내게 함",
+  Q: "배점이 표시되어 있지 않음",
+  R: "지시와 조건을 한 문장에 길게 이어 써 요구 사항을 놓치기 쉬움",
+  S: "제시 자료에 제목·단위·출처가 빠져 있음",
+  T: "맞춤법·띄어쓰기 오류가 있음",
+  V: "발문이 가리키는 자료 기호와 실제 자료가 다름",
+  W: "답란의 크기가 요구하는 답안 분량과 맞지 않음",
+  Y: "발문과 자료에서 같은 대상을 다른 용어로 씀"
+};
+const CLINIC = [
+  { subj: "사회", item: "(문) 지방 자치 단체의 뜻을 쓰시오. (2점)", ans: "A", opts: ["A", "C", "D", "H"],
+    why: "교과서의 정의를 외워 쓰면 되는 문항입니다. 지방 자치를 이해하고 실제 사례에 적용할 수 있는지 확인할 수 없어 서·논술형으로 출제할 까닭이 적습니다.",
+    fix: "[자료: 우리 시의 올해 주요 사업 – 도서관 신축, 버스 노선 확대, 하천 정비]\n(문) <자료>의 사업 중 한 가지를 골라, 지방 자치 단체가 그 일을 맡아 하는 것이 주민에게 어떤 도움이 되는지 쓰시오. (3점)" },
+  { subj: "사회", item: "(문) 우리 고장의 옛날과 오늘날에 대해 쓰시오. (3점)", ans: "B", opts: ["B", "C", "E", "G"],
+    why: "옛날과 오늘날의 무엇을, 어떻게 써야 하는지 정해져 있지 않습니다. 답안이 제각각이 되어 채점 요소를 정할 수 없습니다.",
+    fix: "[자료: 우리 고장의 옛날과 오늘날 사진]\n(문) 두 사진을 비교하여 우리 고장에서 달라진 점을 두 가지 쓰고, 그중 한 가지가 달라진 까닭을 쓰시오. (3점)" },
+  { subj: "사회", item: "(문) 우리 마을에 대형 마트가 들어서는 것이 좋은 이유를 세 가지 쓰시오. (3점)", ans: "C", opts: ["C", "E", "G", "H"],
+    why: "찬성 입장만 쓰게 하여 학생의 판단을 미리 정해 둡니다. 논쟁적 주제는 입장이 아니라 근거의 타당성으로 평가해야 합니다.",
+    fix: "[자료: 대형 마트 입점에 대한 주민·상인 의견 조사 결과]\n(문) 우리 마을에 대형 마트가 들어서는 것에 대한 찬성 또는 반대 입장을 밝히고, <자료>에서 근거를 두 가지 찾아 입장과 연결하여 쓰시오. (4점)" },
+  { subj: "사회", item: "(문) 국가유산을 답사의 방법으로 조사했을 때의 장점을 2가지 이상 제시하시오. (2점)", ans: "D", opts: ["D", "C", "E", "G"],
+    why: "‘2가지 이상’이라 많이 쓰면서 틀린 내용을 섞은 답안을 어떻게 채점할지 문제가 생깁니다.",
+    fix: "(문) 국가유산을 답사의 방법으로 조사했을 때의 장점을 2가지 제시하시오. (2점)" },
+  { subj: "사회", item: "(문) 물건을 사고파는 시장처럼, 생산자와 소비자가 만나 경제 활동을 하는 곳을 무엇이라고 하는지 쓰시오. (2점)", ans: "E", opts: ["E", "C", "D", "H"],
+    why: "질문 속 ‘시장처럼’이라는 말에 정답이 드러나 있어, 시장의 개념을 이해했는지 확인할 수 없습니다.",
+    fix: "(문) 전통 시장과 온라인 쇼핑몰은 모습이 서로 다르지만 모두 ‘시장’이라고 합니다. 두 곳의 공통점을 생산자와 소비자의 관계를 들어 쓰시오. (3점)" },
+  { subj: "사회", item: "(문) 지방 자치 단체의 재정 자립도가 지역 주민의 삶에 미치는 함의를 논하시오. (4점)", ans: "G", opts: ["G", "C", "E", "H"],
+    why: "‘재정 자립도’, ‘함의’, ‘논하시오’ 같은 표현이 어려워 무엇을 써야 하는지 이해하기 어렵습니다. 사회과 이해보다 어휘 이해력이 함께 측정됩니다.",
+    fix: "(문) 우리 지역의 살림에 쓸 돈이 부족하면 주민들의 생활에 어떤 어려움이 생길 수 있는지 한 가지 쓰시오. (2점)" },
+  { subj: "사회", mat: MAT.trash, item: "(문) 쓰레기를 줄이기 위해 우리가 할 수 있는 일을 한 가지 쓰시오. (2점)", ans: "H", opts: ["H", "C", "G", "E"],
+    why: "자료를 읽지 않아도 상식으로 답할 수 있어 자료 해석 능력을 확인할 수 없습니다. 자료는 장식이 아니라 답을 쓸 때 활용해야 하는 단서여야 합니다.",
+    fix: "(문) 표에서 쓰레기 배출량이 가장 많이 늘어난 달을 찾아 그 까닭을 추측하고, 그 달에 우리 마을에서 실천할 수 있는 쓰레기 줄이기 방법을 한 가지 쓰시오. (3점)" },
+  { subj: "사회", mat: MAT.pyr, item: "(문) 저출산 문제를 해결하기 위한 방법을 한 가지 쓰시오. (2점)", ans: "H", opts: ["H", "C", "D", "G"],
+    why: "인구 피라미드를 읽지 않아도 알고 있는 내용만으로 답할 수 있습니다. 두 자료를 비교해 변화를 읽어 내는 능력을 확인할 수 없습니다.",
+    fix: "(문) 1970년과 2020년의 인구 피라미드를 비교하여 달라진 점을 한 가지 쓰고, 이러한 변화로 앞으로 생길 수 있는 사회 문제를 한 가지 쓰시오. (3점)" },
+  { subj: "사회", mat: MAT.incin, item: "(문) 기사에서 주민들이 참여한 방법을 한 가지 찾아 쓰시오. (2점)", ans: "I", opts: ["I", "C", "G", "J"],
+    why: "기사의 문장을 그대로 옮겨 쓰기만 해도 답이 되어, 주민 참여의 의미를 이해했는지 확인할 수 없습니다.",
+    fix: "(문) 기사에서 주민들이 참여한 방법을 한 가지 찾고, 그 방법이 소각장 위치를 정하는 데 어떤 도움이 되었는지 자신의 말로 쓰시오. (3점)\n<조건> 참여 방법을 쓸 때, 기사의 문장을 그대로 옮겨 쓰지 않아야 함" },
+  { subj: "사회", mat: MAT.mapScale, item: "[평가요소] 지도의 축척을 활용하여 실제 거리를 구하고, 그 과정을 설명하기\n(문) 지도에서 우체국은 학교의 어느 방향에 있는지 쓰시오. (2점)", ans: "J", opts: ["J", "C", "E", "G"],
+    why: "평가요소는 ‘축척으로 실제 거리를 구하고 과정을 설명하기’인데, 문항은 방위만 묻습니다. 이 문항으로는 평가하려던 능력을 확인할 수 없습니다.",
+    fix: "(문) 지도의 축척을 활용하여 학교에서 우체국까지의 실제 거리를 구하고, 어떻게 구했는지 그 과정을 쓰시오. (3점)" },
+  { subj: "사회", mat: MAT.mapNoCompass, item: "(문) 지도를 보고 시청이 학교의 어느 방향에 있는지 쓰고, 그렇게 판단한 근거를 쓰시오. (3점)", ans: "K", opts: ["K", "C", "E", "G"],
+    why: "지도에 방위표가 없어 방향을 판단할 근거가 없습니다. 학생은 답을 쓸 수 없거나, ‘위쪽이 북쪽’이라는 짐작에 기대어 답하게 됩니다.",
+    fixMat: MAT.mapCompass, fix: "(문) 지도의 방위표를 활용하여 시청이 학교의 어느 방향에 있는지 쓰고, 그렇게 판단한 근거를 쓰시오. (3점)" },
+  { subj: "사회", mat: MAT.age2020, item: "(문) 자료를 보고 우리나라 인구가 시간이 흐르면서 어떻게 변해 왔는지 쓰시오. (3점)", ans: "K", opts: ["K", "C", "D", "G"],
+    why: "한 해의 자료만으로는 시간에 따른 변화를 알 수 없습니다. 질문이 요구하는 내용을 자료에서 찾을 수 없습니다.",
+    fix: "[자료: 1970년, 1995년, 2020년의 연령별 인구 그래프]\n(문) 세 그래프를 비교하여 우리나라 인구 구성이 어떻게 변해 왔는지 두 가지 쓰시오. (3점)" },
+  { subj: "사회", item: "(문) 조선 후기에 나타난 사회 변화의 모습을 세 가지 쓰고, 각각의 원인과 결과, 오늘날 우리에게 주는 교훈을 쓰시오. (2점)", ans: "M", opts: ["M", "C", "E", "G"],
+    why: "변화 세 가지마다 원인·결과·교훈까지 9가지가 넘는 내용을 써야 하는데 배점은 2점입니다. 요소별로 점수를 나눌 수 없어 채점기준을 세우기 어렵고, 학생에게도 부담이 지나칩니다.",
+    fix: "(문) <자료>를 보고 조선 후기에 나타난 사회 변화의 모습을 한 가지 쓰고, 그 변화가 일어난 까닭을 쓰시오. (2점)" },
+  { subj: "사회", item: "(문) 우리나라의 기후 특징을 한 가지 쓰고, 지방 자치 단체가 하는 일을 두 가지 쓰시오. (3점)", ans: "N", opts: ["N", "C", "E", "G"],
+    why: "기후와 지방 자치는 서로 관련 없는 내용입니다. 한 문항에 묶으면 무엇을 평가하는 문항인지 흐려지고, 한쪽만 아는 학생의 점수를 해석하기 어렵습니다.",
+    fix: "두 문항으로 나눕니다.\n(문 1) <자료>의 월별 기온 그래프를 보고 우리나라 기후의 특징을 한 가지 쓰시오. (1점)\n(문 2) <자료>의 시청 누리집 화면을 보고 지방 자치 단체가 하는 일을 두 가지 찾아 쓰시오. (2점)" },
+  { subj: "사회", item: "(문) 우리 가족의 한 달 수입과 지출 내역을 조사하여 쓰고, 우리 가족이 합리적으로 소비하고 있는지 평가하시오. (4점)", ans: "P", opts: ["P", "C", "E", "G"],
+    why: "가정의 수입과 지출은 사적인 정보입니다. 학생과 가족에게 부담을 주고, 가정 형편이 그대로 드러날 수 있습니다.",
+    fix: "[자료: 가상의 ○○네 가족 한 달 지출표]\n(문) <자료>를 보고 ○○네 가족의 지출 중 합리적이지 않다고 생각하는 부분을 한 가지 찾고, 그렇게 판단한 까닭을 쓰시오. (3점)" },
+  { subj: "사회", mat: MAT.gunPop, area: "형식", item: "(문) 자료를 보고 ○○군의 인구가 줄어든 까닭을 두 가지 추측하여 쓰고, 이를 해결하기 위한 방법을 한 가지 쓰시오.", ans: "Q", opts: ["Q", "C", "E", "G"],
+    why: "배점이 표시되어 있지 않습니다. 학생은 어느 부분에 얼마나 써야 할지 가늠할 수 없고, 채점기준표의 점수 단계를 정할 근거도 없습니다.",
+    fix: "(문) 자료를 보고 ○○군의 인구가 줄어든 까닭을 두 가지 추측하여 쓰고, 이를 해결하기 위한 방법을 한 가지 쓰시오. (3점)" },
+  { subj: "사회", mat: MAT.river, area: "형식", item: "(1) 지도의 가~다 중 강 하류에 발달한 도시를 찾아 기호를 쓰시오. (1점)\n(2) (1)의 도시가 강 하류에 발달한 까닭을 지형의 특징과 관련지어 쓰시오.", ans: "Q", opts: ["Q", "R", "C", "G"],
+    why: "(2)에 배점이 없습니다. 하위 문항마다 배점을 밝혀야 학생이 답안 분량을 정하고, 채점자도 같은 기준으로 채점할 수 있습니다.",
+    fix: "(2) (1)의 도시가 강 하류에 발달한 까닭을 지형의 특징과 관련지어 쓰시오. (2점)" },
+  { subj: "사회", mat: MAT.parkNews, area: "형식", item: "(문) 기사를 읽고 기사에 나타난 지역 문제가 무엇인지 쓰고 그 문제가 생긴 까닭을 기사에서 찾아 쓴 다음 이 문제를 해결하기 위해 주민과 시청이 각각 할 수 있는 일을 한 가지씩 쓰시오. (4점)", ans: "R", opts: ["R", "C", "G", "Q"],
+    why: "네 가지 지시를 한 문장에 길게 이어 써서 학생이 일부를 빠뜨리기 쉽습니다. 답이 빠졌을 때 몰라서인지 놓쳐서인지 구분할 수 없습니다.",
+    fix: "(문) 기사를 읽고 물음에 답하시오.\n(1) 기사에 나타난 지역 문제와 그 문제가 생긴 까닭을 쓰시오. (2점)\n(2) 이 문제를 해결하기 위해 주민과 시청이 할 수 있는 일을 각각 한 가지씩 쓰시오. (2점)" },
+  { subj: "사회", mat: MAT.agency, area: "형식", item: "(문) 자료에서 공공 기관을 두 가지 찾아 하는 일을 쓰되 자료의 문장을 그대로 옮기지 말고 자신의 말로 바꾸어 쓰고 각각 한 문장으로 쓰며 ‘주민’이라는 낱말을 반드시 넣어 쓰시오. (4점)", ans: "R", opts: ["R", "C", "G", "Q"],
+    why: "답안 조건 세 가지가 발문 속에 섞여 있어 눈에 띄지 않습니다. 조건을 놓친 답안이 많아지고, 채점할 때도 조건을 하나하나 다시 찾아야 합니다.",
+    fix: "(문) 자료에서 공공 기관을 두 가지 찾아 각 기관이 하는 일을 쓰시오. (4점)\n<조건>\n· 자료의 문장을 그대로 옮기지 말고 자신의 말로 쓸 것\n· 기관마다 한 문장으로 쓸 것\n· ‘주민’이라는 낱말을 넣을 것" },
+  { subj: "사회", mat: MAT.carNoTitle, area: "형식", item: "(문) 그래프를 보고 우리 고장에서 나타난 변화를 쓰고, 그 변화가 주민 생활에 준 영향을 쓰시오. (3점)", ans: "S", opts: ["S", "C", "E", "G"],
+    why: "그래프에 제목과 단위가 없어 무엇이 얼마나 변했는지 읽을 수 없습니다. 학생마다 그래프를 다르게 해석해 답안이 제각각이 됩니다.",
+    fixMat: MAT.carTitle, fix: "그래프에 제목, 단위, 출처를 넣습니다." },
+  { subj: "사회", mat: MAT.phoneNoSrc, area: "형식", item: "(문) 자료를 근거로 우리 시 청소년의 생활 문제를 한 가지 쓰고, 해결 방법을 제안하시오. (3점)", ans: "S", opts: ["S", "C", "E", "G"],
+    why: "통계 자료에 출처와 조사 시기가 없습니다. 자료를 믿을 수 있는지 판단할 수 없고, 출처를 밝혀 자료를 활용하는 사회과의 기본 태도와도 어긋납니다.",
+    fixMat: MAT.phoneSrc, fix: "자료에 출처와 조사 시기를 밝힙니다." },
+  { subj: "사회", area: "형식", item: "(문) 우리 지역의 문제를 해결하기 위해 주민들이 참여할수 있는 방법을 두가지 쓰고, 각 방법의 장점을 쓰시요. (4점)", ans: "T", opts: ["T", "C", "E", "G"],
+    why: "‘참여할수’, ‘두가지’는 띄어 써야 하고, ‘쓰시요’는 ‘쓰시오’가 맞습니다. 평가지의 오류는 문항에 대한 신뢰를 떨어뜨리고 학생의 맞춤법 학습에도 좋지 않습니다.",
+    fix: "(문) 우리 지역의 문제를 해결하기 위해 주민들이 참여할 수 있는 방법을 두 가지 쓰고, 각 방법의 장점을 쓰시오. (4점)" },
+  { subj: "사회", mat: MAT.trans, area: "형식", item: "(문) 자료 (가)와 (다)를 비교하여 교통수단의 발달로 달라진 생활 모습을 쓰시오. (3점)", ans: "V", opts: ["V", "C", "G", "Q"],
+    why: "발문은 (다)를 가리키지만 자료에는 (가)와 (나)만 있습니다. 학생은 어떤 자료를 비교해야 할지 혼란스러워합니다.",
+    fix: "(문) 자료 (가)와 (나)를 비교하여 교통수단의 발달로 달라진 생활 모습을 쓰시오. (3점)" },
+  { subj: "사회", area: "형식", item: "(문) 옛날과 오늘날의 의생활, 식생활, 주생활 모습을 비교하여 달라진 점을 각각 한 가지씩 쓰고, 그 까닭을 쓰시오. (6점)", matAfter: MAT.answerLine, ans: "W", opts: ["W", "C", "E", "G"],
+    why: "여섯 가지 내용을 쓰게 하면서 답란은 한 줄뿐입니다. 학생은 답란에 맞추어 짧게 쓰거나 일부를 빠뜨리게 됩니다.",
+    fix: "답란을 의생활·식생활·주생활별로 ‘달라진 점’과 ‘까닭’을 쓰는 표로 바꿉니다." },
+  { subj: "사회", mat: MAT.heritage, area: "형식", item: "(문) 자료를 보고 우리 고장의 문화재를 보호하기 위해 어린이가 할 수 있는 일을 두 가지 쓰시오. (2점)", ans: "Y", opts: ["Y", "C", "E", "G"],
+    why: "자료는 ‘국가유산’, 발문은 ‘문화재’라고 써서 같은 대상을 다르게 부릅니다. 학생은 둘이 같은 것인지 헷갈릴 수 있습니다.",
+    fix: "(문) 자료를 보고 우리 고장의 국가유산을 보호하기 위해 어린이가 할 수 있는 일을 두 가지 쓰시오. (2점)" }
+];
+const MAT_W = {
+  library: M.box("자료", M.table(["연도", "2015", "2020", "2025"], [["도서관 수(곳)", 6, 8, 11]], "우리 시의 공공 도서관 수")),
+  market: M.box("자료", M.news("○○신문 | 2025년 10월 2일", "손님 줄어든 ○○ 전통 시장", ["○○ 전통 시장 근처에 대형 마트가 들어선 뒤 시장을 찾는 손님이 크게 줄었다. 상인들은 손님이 줄어 어려움을 겪고 있다.", "시장에는 주차장이 없어 차를 가지고 오는 손님이 이용하기 불편하다. 상인회는 시청에 주차장을 만들어 달라고 건의하기로 하였다."])),
+  village: M.box("자료 (가)", M.table(["직업", "농업", "어업", "서비스업", "기타"], [["비율(%)", 52, 8, 25, 15]], "△△ 촌락의 직업 구성")) + M.box("자료 (나)", M.table(["직업", "농업", "제조업", "서비스업", "기타"], [["비율(%)", 3, 22, 64, 11]], "□□ 도시의 직업 구성"))
+};
+const WRITE = [
+  { write: true, area: "종합", item: "(문) 우리 고장의 옛날과 오늘날의 모습에 대해 생각나는 대로 모두 쓰시요.",
+    points: ["무엇을 비교해 써야 하는지(답안 요소)가 분명하지 않다.", "몇 가지를 써야 하는지 정해져 있지 않다.", "배점이 없다.", "‘쓰시요’는 ‘쓰시오’로 고쳐야 한다."],
+    fix: "[자료: 우리 고장의 옛날과 오늘날 사진]\n(문) 두 사진을 비교하여 우리 고장에서 달라진 점을 두 가지 쓰고, 그중 한 가지가 달라진 까닭을 쓰시오. (3점)" },
+  { write: true, area: "종합", mat: MAT_W.library, item: "(문) 표를 보고 우리 시 주민들이 도서관을 많이 이용하는 까닭을 세 가지 쓰고, 앞으로 도서관을 더 지어야 하는 까닭을 쓰시오. (2점)",
+    points: ["표는 도서관 ‘수’만 보여 주므로 주민이 도서관을 많이 이용하는지 알 수 없다(자료와 질문이 맞지 않음).", "‘더 지어야 하는 까닭’만 쓰게 하여 한쪽 입장을 강요한다.", "네 가지 내용을 쓰게 하면서 배점은 2점이다.", "자료에 출처가 없다."],
+    fix: "[자료: 우리 시 공공 도서관 수와 연간 이용자 수 (출처: ○○시 통계)]\n(문) 자료를 보고 우리 시 도서관 이용의 변화를 한 가지 쓰고, 도서관을 더 지어야 하는지에 대한 자신의 입장을 그 까닭과 함께 쓰시오. (3점)" },
+  { write: true, area: "종합", item: "[평가요소] 지역 문제를 해결하기 위한 주민 참여 방법 설명하기\n(문) 지방 자치 단체의 재정 자립도를 높이기 위한 정책 대안을 제시하고, 그 타당성을 논증하시오. (5점)",
+    points: ["평가요소(주민 참여 방법 설명)와 문항이 요구하는 내용이 다르다.", "‘재정 자립도’, ‘정책 대안’, ‘타당성을 논증’ 등 어휘가 학생 수준에 맞지 않다.", "무엇을 몇 가지 써야 하는지 정해져 있지 않다."],
+    fix: "[자료: 주민들이 지역 문제를 해결한 과정을 다룬 기사]\n(문) 기사에서 주민들이 지역 문제를 해결하기 위해 참여한 방법을 두 가지 찾고, 각 방법이 문제 해결에 어떤 도움이 되었는지 쓰시오. (4점)" },
+  { write: true, area: "종합", mat: MAT_W.market, item: "(문) 기사에 나온 전통 시장 상인들의 어려움을 찾아 쓰시오. (3점)",
+    points: ["기사의 문장(‘손님이 줄어 어려움을 겪고 있다’)을 그대로 옮겨도 답이 된다.", "찾아 쓰기만 하는 단순한 사고를 요구하여 3점 배점에 맞지 않다.", "몇 가지를 찾아 써야 하는지 정해져 있지 않다."],
+    fix: "(문) 기사에서 전통 시장 상인들이 겪는 어려움을 한 가지 찾고, 이를 해결하기 위해 시청과 주민이 할 수 있는 일을 각각 한 가지씩 자신의 말로 쓰시오. (3점)" },
+  { write: true, area: "종합", mat: MAT_W.village, matAfter: `<div class="mat-ans"><b>답:</b><span></span></div>`, item: "(문) 자료 (가)와 (다)를 비교하여 촌락과 도시의 차이점을 쓰고 그 차이가 생긴 까닭을 쓰고 촌락의 문제를 해결하는 방법도 쓰시오.",
+    points: ["자료는 (가)와 (나)인데 발문은 (다)를 가리킨다.", "세 가지 지시를 한 문장에 이어 써 놓치기 쉽다.", "‘촌락의 문제 해결 방법’은 제시한 자료(직업 구성)와 관련이 없다.", "배점이 없다.", "답란이 한 줄뿐이라 요구하는 분량과 맞지 않다."],
+    fix: "(문) 자료 (가)와 (나)를 비교하여 물음에 답하시오.\n(1) 촌락과 도시의 직업 구성에서 나타나는 차이점을 한 가지 쓰시오. (1점)\n(2) (1)과 같은 차이가 나타나는 까닭을 쓰시오. (2점)\n※ 답란을 (1), (2)로 나누어 충분한 공간을 줍니다." }
+];
+CLINIC.push(...WRITE);
+
+// =====================================================================
+// 데이터 3: 채점기준표 다듬기 (연수 예시와 다른 사회과 연습 문항)
+// =====================================================================
+const VAGUE = ["타당", "적절", "논리적", "충실", "성실", "우수", "미흡", "다소", "단편적", "대체로", "충분", "꼼꼼", "적극적", "훌륭", "체계적", "자세히", "풍부", "잘 "];
+const P_JUMIN = {
+  title: "사회 · 지역 문제 해결과 주민 참여",
+  question: "<자료>를 읽고, 주민들이 지역 문제를 해결하기 위해 참여한 방법을 두 가지 찾아 쓰고, 각 방법이 문제 해결에 어떤 도움이 되었는지 쓰시오. (4점)",
+  context: "○○초등학교 앞 어린이 보호 구역의 불법 주차 문제\n① 학부모와 주민들이 한 달 동안 불법 주차 차량을 조사하여 구청에 알렸다.\n② 주민 회의를 열어 등하교 시간에는 학교 앞에 차를 세우지 않기로 약속하였다.\n③ 구청 누리집에 단속 카메라 설치를 건의하는 글을 올렸다.\n④ 석 달 뒤 단속 카메라가 설치되었고, 학교 앞 불법 주차가 크게 줄었다."
+};
+const R_JUMIN = [[4, "주민 참여 방법과 그 도움을 정확하고 자세히 쓴 경우"], [3, "주민 참여 방법과 그 도움을 대체로 바르게 쓴 경우"], [2, "주민 참여 방법 2가지를 찾았으나, 도움은 쓰지 않은 경우"], [1, "주민 참여 방법을 1가지만 찾은 경우"], [0, "무응답 또는 문항과 관련 없는 내용을 쓴 경우"]];
+const P_INGWON = {
+  title: "사회 · 생활 속 인권 보장",
+  question: "<사례> ㉠~㉢ 중 인권이 보장되지 않은 사례를 두 가지 고르고, 각 사례에서 어떤 권리가 보장되지 않았는지 그 까닭과 함께 쓰시오. (3점)",
+  context: "㉠ 휠체어를 타는 민수는 강당에 경사로가 없어 학예회 공연에 참여하지 못하였다.\n㉡ 우리 반은 학급 규칙을 정할 때 모든 학생이 의견을 내고 투표로 결정하였다.\n㉢ 지아는 피부색이 다르다는 이유로 친구들의 놀이에 끼지 못하였다."
+};
+const R_INGWON = [[3, "인권이 보장되지 않은 사례를 고르고, 권리와 까닭을 타당하게 쓴 경우"], [2, "사례를 골랐으나, 권리나 까닭에 대한 설명이 다소 부족한 경우"], [1, "사례만 고른 경우"], [0, "무응답 또는 문항과 관련 없는 내용을 쓴 경우"]];
+const POLISH = [
+  { set: P_JUMIN, rubric: R_JUMIN, target: 0,
+    problem: "‘정확하고 자세히’는 무엇을 몇 가지 써야 하는지 알려 주지 않습니다. 문항이 요구한 ‘참여 방법 두 가지’와 ‘각 방법의 도움’이 기준에 드러나지 않아, 길게 쓴 답안이 높은 점수를 받기 쉽습니다.",
+    sample: "주민들이 불법 주차 차량을 조사해서 구청에 알렸습니다. 그래서 구청이 문제를 알게 되었습니다. 또 주민 회의를 열어서 차를 세우지 않기로 약속했습니다.",
+    sampleQ: "이 답안은 ‘정확하고 자세히 쓴 경우(4점)’일까요?",
+    sampleWhy: "참여 방법 두 가지는 찾았지만, 도움은 첫 번째 방법(조사해서 알림)에만 썼고 두 번째 방법(주민 회의 약속)의 도움은 쓰지 않았습니다. ‘자세히’를 어떻게 보느냐에 따라 4점과 3점으로 갈립니다.",
+    keys: [{ label: "참여 방법의 개수(2가지)", re: "2\\s*가지|두\\s*가지|2\\s*개|두\\s*개" }, { label: "<자료>에서 찾기", re: "자료" }, { label: "각 방법마다 도움을 연결", re: "각|모두|연결" }],
+    model: "<자료>에서 주민 참여 방법 2가지를 찾고, 각 방법이 문제 해결에 준 도움을 모두 바르게 연결하여 쓴 경우" },
+  { set: P_JUMIN, rubric: R_JUMIN, target: 1,
+    problem: "‘대체로 바르게’는 4점과 무엇이 다른지 알려 주지 않습니다. 무엇을 몇 가지 갖추면 3점인지 정해져 있지 않습니다.",
+    sample: "학부모와 주민들이 불법 주차 차량을 조사해 구청에 알려서, 구청이 문제를 정확히 알게 되었습니다. 그리고 구청 누리집에 건의하는 글을 올렸습니다.",
+    sampleQ: "이 답안은 ‘대체로 바르게 쓴 경우(3점)’일까요?",
+    sampleWhy: "방법 두 가지를 찾았고, 그중 첫 번째 방법만 도움과 연결했습니다. ‘대체로’가 어디까지인지 정해져 있지 않아 4점과 3점 사이에서 판단이 갈립니다.",
+    keys: [{ label: "참여 방법 2가지를 찾음", re: "2\\s*가지|두\\s*가지|2\\s*개|두\\s*개" }, { label: "1가지 방법만 도움과 연결함", re: "1\\s*가지|한\\s*가지|1\\s*개|하나" }],
+    model: "<자료>에서 주민 참여 방법 2가지를 찾았으나, 그중 1가지 방법에 대해서만 문제 해결에 준 도움을 바르게 연결하여 쓴 경우" },
+  { set: P_INGWON, rubric: R_INGWON, target: 0,
+    problem: "‘타당하게’가 무엇을 갖추어야 하는지 정해져 있지 않습니다. 문항이 요구한 ‘사례 두 가지’, ‘보장되지 않은 권리’, ‘까닭’이 기준에 드러나야 합니다.",
+    sample: "㉠과 ㉢입니다. ㉠은 민수가 학예회에 참여하지 못해서 속상했을 것입니다. ㉢은 차별을 받았기 때문입니다.",
+    sampleQ: "이 답안은 ‘타당하게 쓴 경우(3점)’일까요?",
+    sampleWhy: "사례 두 가지는 바르게 골랐지만, ㉠은 민수의 기분만 썼을 뿐 보장되지 않은 권리를 쓰지 않았습니다. ㉢의 ‘차별’을 권리에 대한 설명으로 인정할지도 채점자마다 다르게 판단합니다.",
+    keys: [{ label: "사례 2가지(㉠, ㉢)", re: "2\\s*가지|두\\s*가지|㉠|㉢" }, { label: "보장되지 않은 권리", re: "권리" }, { label: "까닭과 연결", re: "까닭|이유|연결" }],
+    model: "인권이 보장되지 않은 사례 2가지(㉠, ㉢)를 바르게 고르고, 각 사례에서 보장되지 않은 권리를 그 까닭과 연결하여 모두 쓴 경우" },
+  { set: P_INGWON, rubric: R_INGWON, target: 1,
+    problem: "‘다소 부족’은 무엇이 빠지면 2점인지 알려 주지 않습니다. 한 사례만 완전하게 쓴 답안, 두 사례의 권리만 쓰고 까닭은 빠진 답안을 어느 칸에 넣을지 정해 두어야 합니다.",
+    sample: "㉠은 경사로가 없어 공연에 참여할 수 없었으므로, 장애가 있어도 다른 친구들과 똑같이 활동에 참여할 권리가 보장되지 않았습니다. ㉢도 인권이 보장되지 않았습니다.",
+    sampleQ: "이 답안은 2점일까요, 1점일까요?",
+    sampleWhy: "㉠은 권리와 까닭을 모두 썼지만 ㉢은 사례만 골랐습니다. ‘다소 부족’의 범위가 정해져 있지 않아 2점과 1점으로 갈립니다.",
+    keys: [{ label: "1가지 사례만 권리·까닭을 쓴 경우", re: "1\\s*가지|한\\s*가지|하나" }, { label: "2가지 사례의 권리만 쓴 경우", re: "2\\s*가지|두\\s*가지" }, { label: "까닭이 빠진 경우", re: "까닭|이유" }],
+    model: "인권이 보장되지 않은 사례 중 1가지에 대해서만 보장되지 않은 권리와 까닭을 바르게 쓴 경우, 또는 사례 2가지의 권리만 쓰고 까닭은 쓰지 않은 경우" },
+  { set: { title: "사회 · 합리적인 선택",
+      question: "우리 가족이 거실에 둘 공기 청정기를 사려고 합니다. 공기 청정기를 고를 때의 선택 기준을 두 가지 정하고, 각 기준을 정한 까닭을 쓰시오. (4점)", context: "" },
+    rubric: [[4, "선택 기준을 정하고, 그 까닭을 충실하게 쓴 경우"], [2, "선택 기준을 정했으나, 까닭이 다소 미흡한 경우"], [1, "선택 기준만 쓴 경우"], [0, "무응답 또는 문항과 관련 없는 내용을 쓴 경우"]], target: 0,
+    problem: "‘충실하게’가 무엇을 갖추어야 하는지 알려 주지 않습니다. 문항이 요구한 ‘기준 두 가지’와 ‘각 기준을 정한 까닭’이 기준에 드러나지 않습니다.",
+    sample: "가격과 소음을 기준으로 정하겠습니다. 소음이 크면 밤에 잠을 자기 어렵기 때문입니다.",
+    sampleQ: "이 답안은 ‘충실하게 쓴 경우(4점)’일까요?",
+    sampleWhy: "선택 기준 두 가지(가격, 소음)는 정했지만, 까닭은 소음을 기준으로 정한 까닭만 썼고 가격을 기준으로 정한 까닭은 쓰지 않았습니다. ‘충실하게’로는 까닭이 하나 빠진 답안을 4점으로 볼지 2점으로 볼지 정할 수 없습니다.",
+    keys: [{ label: "선택 기준 2가지", re: "2\\s*가지|두\\s*가지|2\\s*개|두\\s*개" }, { label: "각 기준마다 까닭", re: "각|모두" }],
+    model: "선택 기준 2가지를 정하고, 각 기준을 정한 까닭을 모두 쓴 경우" },
+  { set: { title: "사회 · 교통수단의 변화와 생활 모습",
+      question: "<자료>를 보고 옛날과 오늘날 교통수단의 달라진 점을 한 가지 쓰고, 그로 인해 사람들의 생활 모습이 어떻게 달라졌는지 쓰시오. (3점)",
+      context: "옛날: 가마, 나룻배, 말\n오늘날: 버스, 고속 열차, 비행기" },
+    rubric: [[3, "옛날과 오늘날의 교통수단을 잘 비교하여 생활 모습의 변화를 쓴 경우"], [2, "교통수단의 달라진 점과 생활 모습의 변화를 모두 썼으나, 두 내용이 서로 연결되지 않은 경우"], [1, "교통수단의 변화만 쓴 경우"], [0, "무응답 또는 문항과 관련 없는 내용을 쓴 경우"]], target: 2,
+    problem: "‘교통수단의 변화만 쓴 경우’는 있지만, 반대로 생활 모습의 변화만 쓴 답안을 넣을 칸이 없습니다(포괄성 부족).",
+    sample: "오늘날에는 먼 곳에 사는 친척 집에도 하루 만에 다녀올 수 있게 되었습니다.",
+    sampleQ: "교통수단의 달라진 점 없이 생활 모습의 변화만 쓴 이 답안은 몇 점일까요?",
+    sampleWhy: "생활 모습의 변화는 바르게 썼지만 교통수단의 달라진 점은 쓰지 않았습니다. 2점은 두 내용을 모두 쓴 경우이므로 해당하지 않고, 1점은 교통수단의 변화만 쓴 경우라 이 답안을 넣을 칸이 없습니다. 채점자마다 1점과 0점으로 갈립니다.",
+    keys: [{ label: "두 요소(교통수단의 달라진 점, 생활 모습의 변화)를 모두 밝힘", re: "^(?=[\\s\\S]*교통)(?=[\\s\\S]*생활)" }, { label: "그중 1가지만 쓴 경우", re: "1\\s*가지|한\\s*가지|하나|중" }],
+    model: "교통수단의 달라진 점과 그로 인한 생활 모습의 변화 중 1가지만 바르게 쓴 경우" }
+];
+
+// =====================================================================
+// 공통
+// =====================================================================
+const $app = document.getElementById("app");
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const nl = (s) => esc(s).replace(/\n/g, "<br>");
+let unsubs = [];
+function cleanup() { unsubs.forEach((u) => u()); unsubs = []; }
+function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
+function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+function myId() { let id = store("sl_pid"); if (!id) { id = "p" + Math.random().toString(36).slice(2, 10); store("sl_pid", id); } return id; }
+function shuffle(a) { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
+const setById = (id) => SETS.find((s) => s.id === id);
+const PATHS = {
+  home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>',
+  arrowR: '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>',
+  arrowL: '<path d="M19 12H5"/><path d="m11 6-6 6 6 6"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M18.5 14.8c1.6.8 2.7 2.6 3 5.2"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  pen: '<path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="m13.5 6.5 4 4"/>',
+  eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  eyeOff: '<path d="M3 3l18 18"/><path d="M10.6 5.1A10.5 10.5 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4"/><path d="M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
+  refresh: '<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>',
+  doc: '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h6"/>',
+  play: '<path d="M7 4.5v15l12-7.5z"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  login: '<path d="M14 4h5v16h-5"/><path d="M10 8l4 4-4 4"/><path d="M3 12h11"/>'
+};
+const ic = (k) => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${PATHS[k]}</svg>`;
+function rubricTable(rows, target = -1) {
+  return `<table class="rb"><tr><th>배점</th><th>채점 기준</th></tr>${rows.map(([p, t], i) => `<tr class="${i === target ? "target" : ""}"><td class="pt">${esc(p)}점</td><td>${nl(t)}</td></tr>`).join("")}</table>`;
+}
+const msgCard = (title, body = "") => `<div class="narrow"><div class="card center" style="padding:36px 22px"><h2>${title}</h2>${body ? `<p class="muted" style="margin:0">${body}</p>` : ""}
+  <div class="row mt16" style="justify-content:center"><button class="btn line" onclick="location.hash=''">${ic("home")}홈</button></div></div></div>`;
+const loading = () => `<div class="narrow"><div class="card center muted" style="padding:36px">불러오는 중…</div></div>`;
+function needDb() {
+  if (db) return true;
+  $app.innerHTML = `<div class="narrow"><div class="card center" style="padding:36px 22px"><h2>실시간 연결에 실패했습니다</h2><p class="muted" style="margin:0">인터넷 연결을 확인해 주세요.</p>
+    <div class="row mt16" style="justify-content:center"><button class="btn pri" onclick="location.reload()">${ic("refresh")}다시 시도</button><button class="btn line" onclick="location.hash=''">${ic("home")}홈</button></div></div></div>`;
+  return false;
+}
+$("homeBtn").onclick = () => { location.hash = ""; };
+$("brand").onclick = () => { location.hash = ""; };
+window.addEventListener("hashchange", route);
+
+// =====================================================================
+// 홈
+// =====================================================================
+function home() {
+  $app.innerHTML = `
+  <h1>무엇을 연습할까요?</h1>
+  <div class="tiles">
+    <button class="tile o" data-go="room"><span class="tag o">연수 · 실시간</span><span class="ib">${ic("users")}</span><h3>같은 답안, 같은 점수?</h3><p>함께 채점하고 일치도 비교</p><span class="go">${ic("arrowR")}</span></button>
+    <button class="tile" data-go="polish"><span class="tag">개인 연습</span><span class="ib">${ic("pen")}</span><h3>채점기준표 다듬기</h3><p>채점기준표 ${POLISH.length}개 고쳐 쓰기</p><span class="go">${ic("arrowR")}</span></button>
+    <button class="tile" data-go="clinic"><span class="tag">개인 연습</span><span class="ib">${ic("search")}</span><h3>문항 검토하기</h3><p>문항 ${CLINIC.length}개 진단</p><span class="go">${ic("arrowR")}</span></button>
+    <button class="tile o" data-go="peer"><span class="tag o">연수 · 실시간</span><span class="ib">${ic("users")}</span><h3>우리 문항 함께 합평하기</h3><p>PDF·사진에 위치별 피드백을 남기고 결과 다운로드</p><span class="go">${ic("arrowR")}</span></button>
+  </div>`;
+  $app.querySelectorAll("[data-go]").forEach((el) => (el.onclick = () => { location.hash = el.dataset.go; }));
+}
+
+// =====================================================================
+// 모드 1: 실시간 채점 협의
+// =====================================================================
+function roomEntry() {
+  $app.innerHTML = `
+  <div class="two">
+    <div class="card"><h2>참여하기</h2>
+      <input type="text" id="code" class="code" placeholder="방 번호" maxlength="4" inputmode="numeric" autocomplete="off">
+      <input type="text" id="name" class="mt8" placeholder="이름" maxlength="20" value="${esc(store("sl_name") || "")}">
+      <button class="btn pri block mt12" id="join">${ic("login")}입장</button>
+    </div>
+    <div class="card"><div class="row between" style="margin-bottom:14px"><h2 style="margin:0">방 만들기</h2><span class="tag o">진행자</span></div>
+      <div class="box" style="font-size:15.5px"><b>${esc(SETS[0].title)}</b><br><span class="muted sm-t">학생 답안 ${SETS[0].answers.length}개 · ${SETS[0].points[0]}점 만점</span></div>
+      <button class="btn acc block mt8" id="create">${ic("plus")}방 만들기</button>
+      <div class="divider">진행 중인 방</div>
+      <div class="row" style="flex-wrap:nowrap"><input type="text" id="hostCode" placeholder="방 번호" maxlength="4" inputmode="numeric" autocomplete="off"><button class="btn line" id="reopen">열기</button></div>
+    </div>
+  </div>`;
+  $("create").onclick = () => createRoom(SETS[0].id);
+  const reopen = async () => {
+    const c = $("hostCode").value.trim();
+    if (!/^\d{4}$/.test(c)) return toast("방 번호 4자리를 입력해 주세요.");
+    const s = await getDoc(doc(db, "rooms", c)); if (!s.exists()) return toast("없는 방 번호입니다.");
+    location.hash = "host/" + c;
+  };
+  const join = async () => {
+    const c = $("code").value.trim(); const n = $("name").value.trim();
+    if (!/^\d{4}$/.test(c)) return toast("방 번호 4자리를 입력해 주세요.");
+    if (!n) return toast("이름을 입력해 주세요.");
+    try { const s = await getDoc(doc(db, "rooms", c)); if (!s.exists()) return toast("없는 방 번호입니다."); }
+    catch (e) { console.error(e); return toast("연결에 실패했습니다."); }
+    store("sl_name", n); location.hash = "play/" + c;
+  };
+  $("reopen").onclick = reopen; $("join").onclick = join;
+  $("code").onkeydown = (e) => { if (e.key === "Enter") $("name").focus(); };
+  $("name").onkeydown = (e) => { if (e.key === "Enter") join(); };
+  $("hostCode").onkeydown = (e) => { if (e.key === "Enter") reopen(); };
+}
+async function createRoom(setId) {
+  try {
+    let code;
+    for (let i = 0; i < 20; i++) { code = String(Math.floor(1000 + Math.random() * 9000)); const s = await getDoc(doc(db, "rooms", code)); if (!s.exists()) break; }
+    await setDoc(doc(db, "rooms", code), { setId, round: 1, rubric: "v1", revealed: false, createdAt: serverTimestamp() });
+    location.hash = "host/" + code;
+  } catch (e) { console.error(e); toast("방을 만들지 못했습니다."); }
+}
+
+// ---------- 진행자 화면 ----------
+function hostView(code) {
+  $app.innerHTML = loading();
+  let room = null, scores = [];
+  const openDetails = new Set();
+  const render = () => {
+    if (!room) return;
+    const set = setById(room.setId);
+    const cur = scores.filter((s) => s.round === room.round);
+    const doneCnt = cur.filter((s) => s.done).length;
+    const stats = set.answers.map((a, i) => {
+      const counts = Object.fromEntries(set.points.map((p) => [p, 0]));
+      let n = 0; const rs = [];
+      cur.forEach((s) => { const v = s.scores && s.scores[i]; if (v !== undefined && v !== null) { counts[v] = (counts[v] || 0) + 1; n++; const r = s.reasons && s.reasons[i]; if (r) rs.push({ v, name: s.name, r }); } });
+      const top = Math.max(0, ...Object.values(counts));
+      return { counts, n, agree: n ? top / n : 0, rs: rs.sort((x, y) => y.v - x.v) };
+    });
+    const agreeAvg = (r) => {
+      const rs = scores.filter((s) => s.round === r); if (!rs.length) return null;
+      let sum = 0, k = 0;
+      set.answers.forEach((a, i) => { const c = {}; let n = 0; rs.forEach((s) => { const v = s.scores && s.scores[i]; if (v !== undefined && v !== null) { c[v] = (c[v] || 0) + 1; n++; } }); if (n) { sum += Math.max(...Object.values(c)) / n; k++; } });
+      return k ? Math.round((sum / k) * 100) : null;
+    };
+    const a1 = agreeAvg(1), a2 = agreeAvg(2);
+    $app.innerHTML = `
+    <div class="card">
+      <div class="row between" style="align-items:flex-start">
+        <div><span class="tag o">진행자</span><h2 style="margin:10px 0 0;font-size:22px">${esc(set.title)}</h2></div>
+        <div style="text-align:right"><div class="lab" style="margin:0 0 6px">방 번호</div><div class="code-big">${code}</div></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">진행</div><div class="v">${room.round}차 채점</div></div>
+        <div class="stat"><div class="k">제출 완료</div><div class="v">${doneCnt}<small> / ${cur.length}명</small></div></div>
+        <div class="stat" title="답안별로 가장 많이 나온 점수를 준 사람의 비율 평균"><div class="k">1차 일치도</div><div class="v">${a1 === null ? "–" : a1 + "%"}</div></div>
+        <div class="stat" title="답안별로 가장 많이 나온 점수를 준 사람의 비율 평균"><div class="k">2차 일치도</div><div class="v">${a2 === null ? "–" : a2 + "%"}</div></div>
+      </div>
+      <div class="row mt16">
+        <div class="seg"><button data-rb="v1" class="${room.rubric === "v1" ? "on" : ""}">초안 기준표</button><button data-rb="v2" class="${room.rubric === "v2" ? "on" : ""}">다듬은 기준표</button></div>
+        <span class="grow"></span>
+        <button class="btn line" id="reveal">${room.revealed ? ic("eyeOff") + "기준 점수 숨기기" : ic("eye") + "기준 점수 공개"}</button>
+        ${room.round === 1 ? `<button class="btn pri" id="round2">${ic("play")}2차 채점 시작</button>` : `<button class="btn line" id="round1">${ic("arrowL")}1차 결과</button>`}
+      </div>
+    </div>
+    <div class="agrid">${set.answers.map((a, i) => {
+      const st = stats[i]; const split = st.n >= 2 && st.agree < 0.7;
+      const badge = st.n < 2 ? "" : split ? `<span class="tag r">의견 갈림</span>` : `<span class="tag g">일치</span>`;
+      return `<div class="acard ${split ? "split" : ""}">
+        <div class="row between"><b>답안 ${i + 1}</b><span class="row" style="gap:6px">${badge}<span class="muted sm-t">${st.n}명</span></span></div>
+        <div class="t">${nl(a.text)}</div>
+        ${set.points.map((p) => `<div class="hb ${room.revealed && p === a.gold ? "gold" : ""}"><span>${p}점</span><span class="tr"><i style="width:${st.n ? ((st.counts[p] || 0) / st.n) * 100 : 0}%"></i></span><b>${st.counts[p] || 0}</b></div>`).join("")}
+        ${st.rs.length ? `<details class="more reasons" data-d="${i}" ${openDetails.has(i) ? "open" : ""}><summary>채점 근거 ${st.rs.length}</summary><ul>${st.rs.map((r) => `<li><b>${r.v}점</b> ${esc(r.name)} · ${esc(r.r)}</li>`).join("")}</ul></details>` : ""}
+        ${room.revealed ? `<div class="call mt12"><b>기준 점수 ${a.gold}점</b>${esc(a.why)}</div>` : ""}
+      </div>`;
+    }).join("")}</div>
+    <details class="card more mt16" data-d="info" ${openDetails.has("info") ? "open" : ""}><summary>문항 · 채점기준표</summary>
+      <p class="muted sm-t" style="margin:14px 0 6px">${esc(set.achieve)}</p>
+      <div class="box">${nl(set.question)}</div>
+      <div class="box src mt8">${nl(set.context)}</div>
+      <div class="two mt16"><div><div class="lab">초안 기준표</div>${rubricTable(set.rubric.v1)}</div><div><div class="lab">다듬은 기준표</div>${rubricTable(set.rubric.v2)}${set.v2note ? `<div class="call mt8" style="font-size:13.5px">${nl(set.v2note)}</div>` : ""}</div></div>
+      <div class="lab mt16">초안 기준표의 문제점</div><ul style="margin:0;padding-left:18px;font-size:14.5px">${set.issues.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+    </details>`;
+    $app.querySelectorAll("details[data-d]").forEach((d) => d.addEventListener("toggle", () => { const k = d.dataset.d === "info" ? "info" : +d.dataset.d; d.open ? openDetails.add(k) : openDetails.delete(k); }));
+    $app.querySelectorAll("[data-rb]").forEach((b) => (b.onclick = () => updateDoc(doc(db, "rooms", code), { rubric: b.dataset.rb })));
+    $("reveal").onclick = () => updateDoc(doc(db, "rooms", code), { revealed: !room.revealed });
+    const r2 = $("round2");
+    if (r2) r2.onclick = () => {
+      if (!r2.classList.contains("armed")) {
+        r2.classList.add("armed"); r2.textContent = "한 번 더 누르면 시작";
+        setTimeout(() => { if (r2.isConnected) { r2.classList.remove("armed"); r2.innerHTML = ic("play") + "2차 채점 시작"; } }, 3000);
+        return;
+      }
+      updateDoc(doc(db, "rooms", code), { round: 2, rubric: "v2", revealed: false });
+    };
+    const r1 = $("round1"); if (r1) r1.onclick = () => updateDoc(doc(db, "rooms", code), { round: 1, rubric: "v1" });
+  };
+  unsubs.push(onSnapshot(doc(db, "rooms", code), (s) => { if (!s.exists()) { $app.innerHTML = msgCard("방을 찾을 수 없습니다"); return; } room = s.data(); if (!setById(room.setId)) { cleanup(); $app.innerHTML = msgCard("이전 버전의 방입니다", "새 방을 만들어 주세요."); return; } render(); }, (e) => { console.error(e); toast("연결 오류가 발생했습니다."); }));
+  unsubs.push(onSnapshot(collection(db, "rooms", code, "scores"), (qs) => { scores = qs.docs.map((d) => d.data()); render(); }));
+}
+
+// ---------- 참여자 화면: 한 장씩 채점 → 제출하고 다음 ----------
+function playView(code) {
+  const pid = myId(); const name = store("sl_name") || "참여자";
+  $app.innerHTML = loading();
+  let room = null, mine = {}, reasons = {}, idx = 0, done = false, pick = null, draft = "", curRound = null, showQ = false;
+  const save = async () => {
+    await setDoc(doc(db, "rooms", code, "scores", `${pid}_r${room.round}`), { pid, name, round: room.round, scores: mine, reasons, done, at: serverTimestamp() }, { merge: true });
+  };
+  const keepDraft = () => { const r = $("reason"); if (r) draft = r.value; };
+  const openAnswer = (i) => { idx = i; done = false; pick = mine[i] !== undefined ? mine[i] : null; draft = reasons[i] || ""; render(); window.scrollTo(0, 0); };
+  const render = () => {
+    if (!room) return;
+    const set = setById(room.setId); const N = set.answers.length;
+    const submitted = Object.keys(mine).length;
+    const v1 = room.rubric === "v1";
+    const head = `
+    <div class="card">
+      <div class="row between"><div class="row" style="gap:6px"><span class="tag">${esc(name)}</span><span class="tag ${v1 ? "o" : "n"}">${room.round}차 · ${v1 ? "초안 기준표" : "다듬은 기준표"}</span></div>
+        <span class="cnt">${submitted} / ${N} 제출</span></div>
+      <h2 class="mt12">${esc(set.title)}</h2>
+      <div class="dots">${set.answers.map((a, i) => `<button class="dot ${mine[i] !== undefined ? "done" : ""} ${!done && i === idx ? "cur" : ""}" data-go="${i}" aria-label="답안 ${i + 1}">${i + 1}</button>`).join("")}</div>
+    </div>`;
+    const bindDots = () => $app.querySelectorAll("[data-go]").forEach((b) => (b.onclick = () => openAnswer(+b.dataset.go)));
+    if (done) {
+      $app.innerHTML = `<div class="narrow">${head}
+      <div class="card"><div class="row" style="gap:8px"><span class="tag g">${ic("check")}${room.round}차 제출 완료</span></div>
+        <table class="sum mt12"><tr><th>답안</th><th>내 점수</th><th>근거</th><th></th></tr>
+        ${set.answers.map((a, i) => `<tr><td>${i + 1}</td><td><b>${mine[i] !== undefined ? mine[i] + "점" : "–"}</b>${room.revealed ? ` <span class="tag o">기준 ${a.gold}점</span>` : ""}</td><td class="muted">${esc(reasons[i] || "")}</td><td style="text-align:right"><button class="btn ghost sm" data-edit="${i}">수정</button></td></tr>`).join("")}
+        </table>
+        ${room.revealed ? set.answers.map((a, i) => `<div class="call mt8"><b>답안 ${i + 1} · 기준 ${a.gold}점</b>${esc(a.why)}</div>`).join("") : ""}
+      </div></div>`;
+      $app.querySelectorAll("[data-edit]").forEach((b) => (b.onclick = () => openAnswer(+b.dataset.edit)));
+      bindDots();
+      return;
+    }
+    const a = set.answers[idx];
+    $app.innerHTML = `<div class="narrow">${head}
+    <div class="card"><div class="row between"><span class="lab" style="margin:0">문항</span><button class="btn line sm" id="toggleQ">${ic("doc")}${showQ ? "자료 접기" : "자료 보기"}</button></div>
+      <div class="box mt8">${nl(set.question)}</div>${showQ ? `<div class="box src mt8">${nl(set.context)}</div>` : ""}</div>
+    <div class="card">
+      <div class="row between"><span class="lab" style="margin:0">학생 답안 ${idx + 1}</span>${mine[idx] !== undefined ? `<span class="tag g">${ic("check")}${mine[idx]}점 제출함</span>` : ""}</div>
+      <div class="ans mt8">${nl(a.text)}</div>
+      <div class="lab mt20">점수</div>
+      ${set.rubric[room.rubric].map(([p, t]) => `<button class="opt ${pick === p ? "on" : ""}" data-p="${p}"><span class="pt">${p}점</span><span class="tx">${nl(t)}</span></button>`).join("")}
+      ${room.rubric === "v2" && set.v2note ? `<div class="call mt8" style="font-size:14px">${nl(set.v2note)}</div>` : ""}
+      <textarea id="reason" class="mt8" maxlength="120" placeholder="채점 근거 (선택)" style="min-height:64px">${esc(draft)}</textarea>
+      ${room.revealed && mine[idx] !== undefined ? `<div class="call mt12"><b>기준 점수 ${a.gold}점</b>${esc(a.why)}</div>` : ""}
+      ${room.revealed && room.round === 1 ? `<details class="more"><summary>초안 기준표의 문제점</summary><ul>${set.issues.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></details>` : ""}
+      <div class="row between mt16">
+        <button class="btn line" id="prev" ${idx === 0 ? "disabled" : ""}>${ic("arrowL")}이전</button>
+        <button class="btn pri" id="submit" ${pick === null ? "disabled" : ""}>${Object.keys(mine).filter((k) => +k !== idx).length === N - 1 ? "제출하고 마치기" : "제출하고 다음"}${ic("arrowR")}</button>
+      </div></div></div>`;
+    $app.querySelectorAll(".opt").forEach((b) => (b.onclick = () => { pick = +b.dataset.p; keepDraft(); render(); }));
+    $("reason").oninput = (e) => { draft = e.target.value; };
+    $("prev").onclick = () => openAnswer(idx - 1);
+    $("toggleQ").onclick = () => { showQ = !showQ; keepDraft(); render(); };
+    bindDots();
+    $("submit").onclick = async () => {
+      if (pick === null) return;
+      keepDraft();
+      mine[idx] = pick; reasons[idx] = draft.trim();
+      const nextIdx = set.answers.findIndex((x, i) => i > idx && mine[i] === undefined);
+      const firstMissing = set.answers.findIndex((x, i) => mine[i] === undefined);
+      done = firstMissing === -1;
+      try { await save(); } catch (e) {
+        console.error(e); delete mine[idx]; done = false;
+        toast(e && e.code === "permission-denied" ? "저장 권한이 없습니다. Firestore 규칙을 확인해 주세요." : "저장에 실패했습니다. 다시 눌러 주세요.");
+        return;
+      }
+      if (done) { render(); window.scrollTo(0, 0); }
+      else openAnswer(nextIdx !== -1 ? nextIdx : firstMissing);
+    };
+  };
+  unsubs.push(onSnapshot(doc(db, "rooms", code), async (s) => {
+    if (!s.exists()) { $app.innerHTML = msgCard("방을 찾을 수 없습니다"); return; }
+    keepDraft();
+    room = s.data();
+    if (!setById(room.setId)) { cleanup(); $app.innerHTML = msgCard("이전 버전의 방입니다", "새 방 번호를 확인해 주세요."); return; }
+    if (room.round !== curRound) {
+      curRound = room.round; mine = {}; reasons = {}; idx = 0; done = false; pick = null; draft = "";
+      const my = await getDoc(doc(db, "rooms", code, "scores", `${pid}_r${room.round}`));
+      if (my.exists()) {
+        const d = my.data(); const sc = d.scores || {}; const rs = d.reasons || {};
+        Object.keys(sc).forEach((k) => (mine[+k] = sc[k])); Object.keys(rs).forEach((k) => (reasons[+k] = rs[k]));
+        done = !!d.done;
+        const N = setById(room.setId).answers.length;
+        const fm = [...Array(N).keys()].find((i) => mine[i] === undefined);
+        if (!done) { idx = fm === undefined ? 0 : fm; pick = mine[idx] !== undefined ? mine[idx] : null; draft = reasons[idx] || ""; }
+      }
+    }
+    render();
+  }, (e) => { console.error(e); toast("연결 오류가 발생했습니다."); }));
+}
+
+// =====================================================================
+// 모드 2: 문항 검토하기 (문항·보기 무작위, 정답 1개)
+// =====================================================================
+function clinicStart() {
+  const idx = CLINIC.map((c, i) => i);
+  const order = [...shuffle(idx.filter((i) => !CLINIC[i].write)), ...idx.filter((i) => CLINIC[i].write)].map((i) => ({ i, opts: CLINIC[i].write ? [] : shuffle(CLINIC[i].opts) }));
+  clinic(order, 0, 0, {});
+}
+function clinic(order, pos, correct, rec) {
+  const total = order.length;
+  if (pos >= total) {
+    $app.innerHTML = `<div class="narrow"><div class="card center" style="padding:40px 22px">
+      <div class="lab">문항 검토하기</div><div class="lab mt8">객관식</div><div class="big-num">${correct}<span class="muted" style="font-size:28px"> / ${order.filter((o) => !CLINIC[o.i].write).length}</span></div>
+      <div class="row mt12" style="justify-content:center">${["내용", "형식"].filter((a) => rec[a]).map((a) => `<span class="tag ${a === "형식" ? "o" : "n"}">${a} ${rec[a][0]} / ${rec[a][1]}</span>`).join("")}${rec["종합"] ? `<span class="tag">서술 검토 · 찾은 문제점 ${rec["종합"][0]} / ${rec["종합"][1]}</span>` : ""}</div>
+      <div class="row mt20" style="justify-content:center"><button class="btn pri" id="again">${ic("refresh")}다시 하기</button><button class="btn line" id="toHome">${ic("home")}홈</button></div></div></div>`;
+    $("again").onclick = clinicStart;
+    $("toHome").onclick = () => { location.hash = ""; };
+    return;
+  }
+  const { i, opts } = order[pos]; const c = CLINIC[i];
+  if (c.write) {
+    $app.innerHTML = `<div class="narrow">
+    <div class="stepbar"><span class="tag g">${ic("check")}${correct}</span><div class="bar"><i style="width:${(pos / total) * 100}%"></i></div><span class="cnt">${pos + 1} / ${total}</span></div>
+    <div class="card">
+      <div class="row between" style="margin-bottom:12px"><h2 style="margin:0">이 문항의 문제점을 모두 써 보세요</h2><span class="tag">서술 검토</span></div>
+      ${c.mat || ""}<div class="box">${nl(c.item)}</div>${c.matAfter || ""}
+      <textarea id="rv" class="mt16" placeholder="검토 의견"></textarea>
+      <div class="row end mt12"><button class="btn acc" id="show">검토 예시 보기</button></div>
+      <div id="result"></div>
+    </div></div>`;
+    $("show").onclick = () => {
+      if (!$("rv").value.trim()) { $("rv").focus(); return toast("검토 의견을 먼저 써 주세요."); }
+      $("show").remove();
+      $("result").innerHTML = `
+        <div class="lab mt16">검토 예시 · 내 의견에 있는 것에 표시하세요</div>
+        <div id="pts">${c.points.map((t, j) => `<label class="chk"><input type="checkbox" data-j="${j}"><span>${esc(t)}</span></label>`).join("")}</div>
+        <div class="lab mt16">수정 예시</div><div class="box model">${nl(c.fix)}</div>
+        <div class="row end mt16"><button class="btn pri" id="next">${pos === total - 1 ? "결과 보기" : "다음"}${ic("arrowR")}</button></div>`;
+      $("next").onclick = () => {
+        const got = $app.querySelectorAll("#pts input:checked").length; const r = rec["종합"] || [0, 0];
+        clinic(order, pos + 1, correct, { ...rec, 종합: [r[0] + got, r[1] + c.points.length] }); window.scrollTo(0, 0);
+      };
+    };
+    return;
+  }
+  $app.innerHTML = `<div class="narrow">
+    <div class="stepbar"><span class="tag g">${ic("check")}${correct}</span><div class="bar"><i style="width:${(pos / total) * 100}%"></i></div><span class="cnt">${pos + 1} / ${total}</span></div>
+    <div class="card">
+      <h2>가장 먼저 고쳐야 할 점은?</h2>
+      ${c.mat || ""}<div class="box">${nl(c.item)}</div>${c.matAfter || ""}
+      <div class="mt16" id="opts">${opts.map((k) => `<button class="choice" data-k="${k}"><span class="rd"></span><span>${esc(TYPES[k])}</span><span class="mark">${ic(k === c.ans ? "check" : "x")}</span></button>`).join("")}</div>
+      <div id="result"></div>
+    </div></div>`;
+  $app.querySelectorAll("#opts .choice").forEach((b) => (b.onclick = () => {
+    const ok = b.dataset.k === c.ans; const area = c.area || "내용";
+    $app.querySelectorAll("#opts .choice").forEach((x) => {
+      x.disabled = true;
+      x.classList.add(x.dataset.k === c.ans ? "ok" : x === b ? "no" : "dim");
+      if (x === b) x.classList.add("picked");
+    });
+    $("result").innerHTML = `
+      <div class="mt16"><span class="tag ${area === "형식" ? "o" : "n"}">${area} 검토</span></div>
+      <div class="call ${ok ? "ok" : "no"} mt8"><b>${ok ? "정답입니다" : "다시 살펴보세요"}</b>${esc(c.why)}</div>
+      <div class="lab mt16">수정 예시</div>${c.fixMat || ""}<div class="box model">${nl(c.fix)}</div>
+      <div class="row end mt16"><button class="btn pri" id="next">${pos === total - 1 ? "결과 보기" : "다음"}${ic("arrowR")}</button></div>`;
+    $("next").onclick = () => { const r = rec[area] || [0, 0]; clinic(order, pos + 1, correct + (ok ? 1 : 0), { ...rec, [area]: [r[0] + (ok ? 1 : 0), r[1] + 1] }); window.scrollTo(0, 0); };
+  }));
+}
+
+// =====================================================================
+// 모드 3: 채점기준표 다듬기
+// =====================================================================
+function highlightVague(text) {
+  let h = esc(text); const found = [];
+  VAGUE.forEach((w) => { const ww = w.trim(); if (!ww) return; if (text.includes(ww)) { found.push(ww); h = h.split(esc(ww)).join(`<mark class="v">${esc(ww)}</mark>`); } });
+  return { h, found };
+}
+function polish(idx = 0) {
+  const total = POLISH.length;
+  if (idx >= total) {
+    $app.innerHTML = `<div class="narrow"><div class="card center" style="padding:40px 22px">
+      <div class="big-ic">${ic("check")}</div><h2>${total}개 과제를 마쳤습니다</h2>
+      <div class="row mt16" style="justify-content:center"><button class="btn pri" id="again">${ic("refresh")}다시 하기</button><button class="btn line" id="toHome">${ic("home")}홈</button></div></div></div>`;
+    $("again").onclick = () => polish(0);
+    $("toHome").onclick = () => { location.hash = ""; };
+    return;
+  }
+  const p = POLISH[idx]; const s = p.set; const tgt = p.rubric[p.target];
+  const saved = (store("sl_polish4") || {})[idx] || "";
+  $app.innerHTML = `
+    <div class="stepbar"><button class="btn line sm icon" id="prevP" ${idx === 0 ? "disabled" : ""} aria-label="이전">${ic("arrowL")}</button><div class="bar"><i style="width:${((idx + 1) / total) * 100}%"></i></div><span class="cnt">${idx + 1} / ${total}</span><button class="btn line sm icon" id="skipP" aria-label="다음">${ic("arrowR")}</button></div>
+    <div class="pgrid">
+      <aside class="card pside">
+        <span class="tag n">${esc(s.title)}</span>
+        <div class="sec mt16">문항</div>
+        <div class="box">${nl(s.question)}</div>
+        ${s.context ? `<div class="box src mt8">${nl(s.context)}</div>` : ""}
+        <div class="sec mt20">채점기준표 초안</div>
+        ${rubricTable(p.rubric, p.target)}
+      </aside>
+      <div>
+        <div class="card">
+          <div class="sec">학생 답안</div>
+          <div class="box white">${nl(p.sample)}</div>
+          <p style="margin:14px 0 0;font-weight:700;font-size:16px">${esc(p.sampleQ)}</p>
+          <details class="more"><summary>판단이 갈리는 이유</summary><div class="call mt8">${esc(p.sampleWhy)}\n\n${esc(p.problem)}</div></details>
+        </div>
+        <div class="card">
+          <div class="sec">${esc(tgt[0])}점 칸 고쳐 쓰기</div>
+          <div class="box">${highlightVague(tgt[1]).h}</div>
+          <div class="keys mt12" id="keys">${p.keys.map((k, j) => `<span data-j="${j}">${ic("check")}${esc(k.label)}</span>`).join("")}</div>
+          <textarea id="mine" class="mt12" placeholder="예: <자료>에서 ○○를 ○가지 찾고, ○○와 연결하여 쓴 경우">${esc(saved)}</textarea>
+          <div class="flag" id="live"></div>
+          <div class="row end"><button class="btn acc" id="cmp">모범안과 비교</button></div>
+          <div id="res"></div>
+        </div>
+      </div>
+    </div>`;
+  const ta = $("mine"), live = $("live");
+  const upd = () => {
+    const v = ta.value; const f = highlightVague(v).found;
+    p.keys.forEach((k, j) => { document.querySelector(`#keys span[data-j="${j}"]`).classList.toggle("on", new RegExp(k.re).test(v)); });
+    live.innerHTML = v.trim() ? (f.length ? `<span style="color:var(--red)">모호한 표현 ${f.map((w) => `<mark class="v">${esc(w)}</mark>`).join(" ")}</span>` : `<span style="color:var(--green)">모호한 표현 없음</span>`) : "";
+    const all = store("sl_polish4") || {}; all[idx] = v; store("sl_polish4", all);
+  };
+  ta.oninput = upd; upd();
+  const go = (n) => { polish(n); window.scrollTo(0, 0); };
+  $("prevP").onclick = () => go(idx - 1);
+  $("skipP").onclick = () => go(idx + 1);
+  $("cmp").onclick = () => {
+    if (!ta.value.trim()) { ta.focus(); return toast("고친 문장을 먼저 써 주세요."); }
+    const hit = p.keys.filter((k) => new RegExp(k.re).test(ta.value)).length;
+    $("res").innerHTML = `
+      <div class="sec mt20" style="font-size:18px">내 문장 · 요소 ${hit}/${p.keys.length}</div><div class="box">${highlightVague(ta.value).h}</div>
+      <div class="sec mt16" style="font-size:18px">모범 수정안</div><div class="box model">${esc(p.model)}</div>
+      <div class="row end mt16"><button class="btn pri" id="next">${idx === total - 1 ? "마치기" : "다음"}${ic("arrowR")}</button></div>`;
+    $("cmp").textContent = "다시 비교";
+    $("next").onclick = () => go(idx + 1);
+  };
+}
+
+// =====================================================================
+// 모드 4: 실시간 문항 합평
+// Firebase 익명 로그인 + Firestore (Spark 무료 요금제, Storage 미사용)
+// =====================================================================
+const PEER_LIMIT = 8 * 1024 * 1024;  // PDF 최대 8 MiB; 큰 사진은 자동 축소
+const PEER_CHUNK_SIZE = 256 * 1024;  // Firestore 문서당 최대 1 MiB 미만
+const PEER_MAX_CHUNKS = Math.ceil(PEER_LIMIT / PEER_CHUNK_SIZE);
+const PEER_TYPES = new Set(["application/pdf", "image/jpeg", "image/png", "image/webp"]);
+let peerReady = null, peerUser = null, peerCleanup = null;
+let pdfjsPromise = null, pdfLibPromise = null;
+const peerUid = () => peerUser && peerUser.uid;
+const peerErr = (e) => {
+  console.error("합평 오류", e);
+  const c = (e && e.code) || "";
+  if (c.includes("permission-denied") || c.includes("unauthorized")) return "접근 권한이 없습니다. Firebase 보안 규칙과 익명 로그인을 확인해 주세요.";
+  if (c.includes("resource-exhausted")) return "Firestore 무료 할당량 또는 파일 용량 한도에 도달했습니다. 다른 날 시도하거나 관리자에게 문의해 주세요.";
+  if (c.includes("network")) return "네트워크 연결을 확인해 주세요.";
+  return (e && e.message && e.message.slice(0, 110)) || "처리 중 오류가 발생했습니다.";
+};
+async function peerConnect() {
+  await fbReady;
+  if (!db || !firebaseApp) throw new Error("Firebase 연결을 확인해 주세요.");
+  if (!peerReady) peerReady = (async () => {
+    const am = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    const auth = am.getAuth(firebaseApp);
+    await auth.authStateReady();
+    if (!auth.currentUser) await am.signInAnonymously(auth);
+    peerUser = auth.currentUser;
+    if (!peerUser) throw new Error("익명 로그인에 실패했습니다.");
+  })();
+  return peerReady;
+}
+async function peerPdfJs() {
+  if (!pdfjsPromise) pdfjsPromise = import("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs").then((mod) => {
+    mod.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs";
+    return mod;
+  });
+  return pdfjsPromise;
+}
+async function peerPdfLib() {
+  if (!pdfLibPromise) pdfLibPromise = import("https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm");
+  return pdfLibPromise;
+}
+const peerRoomRef = (code) => doc(db, "peerRooms", code);
+const peerPersonRef = (code) => doc(db, "peerRooms", code, "participants", peerUid());
+const peerComments = (code) => collection(db, "peerRooms", code, "comments");
+const peerDocs = (code) => collection(db, "peerRooms", code, "documents");
+const peerChunks = (code, documentId) => collection(db, "peerRooms", code, "documents", documentId, "chunks");
+const peerText = (s, n=80) => String(s || "").trim().slice(0,n);
+const peerName = () => peerText(store("peer_name") || "", 24);
+const peerValidCode = (s) => /^\d{6}$/.test(s);
+const peerMime = (file) => {
+  if (PEER_TYPES.has(file.type)) return file.type;
+  const ext = file.name.split(".").pop().toLowerCase();
+  return ({ pdf:"application/pdf", jpg:"image/jpeg", jpeg:"image/jpeg", png:"image/png", webp:"image/webp" })[ext] || "";
+};
+function peerEntry(filledCode = "") {
+  $app.innerHTML = `<div class="narrow"><h1>우리 문항 함께 합평하기</h1>
+    <div class="call">교사가 만든 문항(PDF·사진)을 서로 검토합니다. 방장 승인 후 입장할 수 있습니다. 교사가 만든 문항·채점기준표의 위치를 누르고 피드백을 달면 실시간으로 공유됩니다. 방장은 작성자별 의견을 하나씩 보여줄 수 있습니다.</div>
+    <div class="two mt16">
+      <div class="card"><h2>합평 방 참여하기</h2><div class="lab">6자리 방 번호</div>
+        <input type="text" class="code" id="peerJoinCode" inputmode="numeric" maxlength="6" placeholder="방 번호" value="${esc(filledCode)}">
+        <div class="lab mt12">표시할 이름</div><input type="text" id="peerJoinName" maxlength="24" placeholder="예: 김선생" value="${esc(peerName())}">
+        <button class="btn pri block mt12" id="peerJoin">${ic("login")}입장 승인 요청</button>
+      </div>
+      <div class="card"><div class="row between"><h2>새 합평 방 만들기</h2><span class="tag o">방장</span></div>
+        <div class="lab">합평 제목</div><input type="text" id="peerTitle" maxlength="60" value="서·논술형 평가 문항 합평" placeholder="예: 6학년 사회 평가 문항 합평">
+        <div class="lab mt12">방장 이름</div><input type="text" id="peerHostName" maxlength="24" placeholder="이름" value="${esc(peerName())}">
+        <button class="btn acc block mt12" id="peerCreate">${ic("plus")}새 합평 방 만들기</button>
+        <p class="peer-entry-hint">방 번호를 선생님께 알려주고 입장 요청을 승인해 주세요. 같은 브라우저를 사용해야 방장 권한이 유지됩니다.</p>
+      </div>
+    </div><p class="peer-helper">무료 요금제 지원 · PDF 최대 8MB · JPG·PNG·WEBP 사진은 크면 자동 압축합니다. Firestore에 저장되어 무료 저장량을 사용합니다. 개인정보나 미공개 시험 원본이 포함되지 않도록 문항과 문서 속성을 확인해 주세요. 연수 종료 전 결과 PDF를 내려받으세요.</p></div>`;
+  const toggle = (busy) => { ["peerJoin","peerCreate"].forEach(id => { const x=$(id); if(x) x.disabled=busy; }); };
+  $("peerJoin").onclick = async () => {
+    const code = $("peerJoinCode").value.trim(), name=peerText($("peerJoinName").value,24);
+    if (!peerValidCode(code)) return toast("방 번호 6자리를 입력해 주세요.");
+    if (!name) return toast("이름을 입력해 주세요.");
+    toggle(true);
+    try {
+      await peerConnect();
+      const room = await getDoc(peerRoomRef(code));
+      if (!room.exists()) return toast("없는 합평 방입니다. 방 번호를 확인해 주세요.");
+      if(room.data().status !== "open") return toast("이미 종료 중인 방입니다. 새 방을 이용해 주세요.");
+      const existing=await getDoc(peerPersonRef(code));
+      if(!existing.exists()) await setDoc(peerPersonRef(code), { name, status:"pending", joinedAt:serverTimestamp() });
+      else if(existing.data().status==="rejected") return toast("입장이 거절된 상태입니다. 방장에게 다시 승인을 요청해 주세요.");
+      else if(existing.data().name!==name) await updateDoc(peerPersonRef(code),{name});
+      store("peer_name",name);
+      location.hash = "peerroom/" + code;
+    } catch(e) {toast(peerErr(e));} finally {toggle(false);}
+  };
+  $("peerCreate").onclick = async () => {
+    const name=peerText($("peerHostName").value,24), title=peerText($("peerTitle").value,60);
+    if (!name || !title) return toast("방장 이름과 합평 제목을 입력해 주세요.");
+    toggle(true);
+    try {
+      await peerConnect();
+      let code = "";
+      for (let i=0;i<30;i++) {
+        const x=String(Math.floor(100000 + Math.random()*900000));
+        if (!(await getDoc(peerRoomRef(x))).exists()) {code=x;break;}
+      }
+      if(!code) throw new Error("방 번호를 만들 수 없습니다. 다시 시도하세요.");
+      await setDoc(peerRoomRef(code), {hostUid:peerUid(),hostName:name,title,reviewFilter:"all",status:"open",createdAt:serverTimestamp()});
+      await setDoc(peerPersonRef(code), {name, status:"approved", joinedAt:serverTimestamp()});
+      store("peer_name",name);
+      location.hash="peerroom/"+code;
+    } catch(e) {toast(peerErr(e));} finally {toggle(false);}
+  };
+  $("peerJoinCode").addEventListener("keydown", e => {if (e.key==="Enter") $("peerJoinName").focus();});
+  $("peerJoinName").addEventListener("keydown", e => {if (e.key==="Enter") $("peerJoin").click();});
+}
+function peerWaitingView(code,initialStatus) {
+  const statusText = status => status === "rejected" ? "방장이 입장 요청을 거절했습니다. 방장에게 문의해 주세요." : "입장 요청을 보냈습니다. 방장이 승인하면 자동으로 합평 화면이 열립니다.";
+  $app.innerHTML = `<div class="narrow" id="peerPending"><h1>합평방 입장 대기</h1><div class="card"><span class="tag o">방 번호 ${esc(code)}</span><h2 class="mt12">방장 승인 대기</h2><p id="peerWaitStatus" class="peer-helper">${statusText(initialStatus)}</p><div class="row mt16"><button class="btn line sm" id="peerWaitBack">다른 방으로 가기</button></div></div></div>`;
+  $("peerWaitBack").onclick=()=>{ location.hash="peer"; };
+  unsubs.push(onSnapshot(peerRoomRef(code), snap=>{
+    if(!snap.exists() || snap.data().status!=="open"){
+      if($("peerWaitStatus")) $("peerWaitStatus").textContent="합평방이 종료되었습니다. 다른 방을 이용해 주세요.";
+    }
+  },err=>toast(peerErr(err))));
+  unsubs.push(onSnapshot(peerPersonRef(code),snap=>{
+    if(!$("peerPending"))return;
+    const status=snap.exists()?snap.data().status:"rejected";
+    if(status==="approved"){ route(); return; }
+    if($("peerWaitStatus")) $("peerWaitStatus").textContent=statusText(status);
+  },err=>toast(peerErr(err))));
+}
+async function peerRoomView(code) {
+  $app.innerHTML = loading();
+  if(!peerValidCode(code)) { $app.innerHTML=msgCard("방 번호가 올바르지 않습니다.");return; }
+  try {
+    await peerConnect();
+    const [room,me] = await Promise.all([getDoc(peerRoomRef(code)),getDoc(peerPersonRef(code))]);
+    if(!room.exists()) { $app.innerHTML=msgCard("합평 방을 찾을 수 없습니다.");return; }
+    if(!me.exists()) { peerEntry(code); return; }
+    if(room.data().status === "closing" && room.data().hostUid !== peerUid()) { $app.innerHTML=msgCard("연수가 종료되는 중입니다", "방장이 합평 자료를 삭제하고 있습니다.");return; }
+    if(room.data().status !== "open" && room.data().status !== "closing") { $app.innerHTML=msgCard("이전 버전의 합평방입니다", "보안이 강화된 새 방을 만들어 사용해 주세요.");return; }
+    if(me.data().status !== "approved") { peerWaitingView(code,me.data().status||"pending"); return; }
+  } catch(e) { $app.innerHTML=msgCard("합평 방에 접속할 수 없습니다",peerErr(e));return; }
+  const state = {closed:false,deleting:false,room:null,docs:[],people:[],notes:[],activeId:null,page:1,pageCount:1,
+    pdf:null,bytesCache:new Map(),imgUrl:null,loadToken:0,draft:null,armed:false,focused:null,uploading:false,loading:false,cameraFile:null};
+  peerCleanup = () => {
+    state.closed=true;
+    ++state.loadToken;
+    if(state.pdf) state.pdf.destroy().catch(()=>{});
+    if(state.imgUrl) URL.revokeObjectURL(state.imgUrl);
+    state.bytesCache.clear();
+    window.removeEventListener("resize",handlePeerResize);
+  };
+  const isHost = () => !!state.room && state.room.hostUid === peerUid();
+  const isOpen = () => !!state.room && state.room.status === "open";
+  const activeDoc = () => state.docs.find(d=>d.id===state.activeId);
+  const currentNotes = () => state.notes.filter(n=>n.documentId===state.activeId);
+  const visibleNotes = () => currentNotes().filter(n => !state.room || state.room.reviewFilter==="all" || n.authorUid===state.room.reviewFilter);
+  const noteIndex = n => currentNotes().findIndex(x=>x.id===n.id)+1;
+  const dateText = n => { const d=n.createdAt&&n.createdAt.toDate&&n.createdAt.toDate();return d?d.toLocaleString("ko-KR",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"}):"방금 전"; };
+  $app.innerHTML = `<div class="peer-shell">
+    <div class="card"><div class="peer-head"><div><span class="tag o">실시간 합평</span><h1 id="peerRoomTitle" class="mt8" style="margin-bottom:5px">합평 방</h1>
+      <div class="muted sm-t">방 번호 <strong id="peerRoomCode" style="font-size:21px;color:var(--teal)">${esc(code)}</strong> · <span id="peerWho"></span> · <span id="peerPeopleCount">0명</span></div></div>
+      <div class="row"><button class="btn line sm" id="peerCopy">방 번호 복사</button><button class="btn line sm" id="peerExit">나가기</button></div></div>
+      <div id="peerHostTools" class="mt12 hidden">
+        <div class="divider">방장 · 참여자 승인 및 접근 관리</div>
+        <p class="peer-helper">승인을 받은 교사만 문항과 피드백을 읽고 작성할 수 있습니다. 승인 취소도 가능합니다.</p>
+        <div id="peerApprovals" class="peer-approvals"></div>
+        <div class="divider">방장 · 발표용 의견 필터</div>
+        <div class="row"><select id="peerReviewerFilter" class="peer-filter" aria-label="현재 모두에게 표시할 피드백 작성자"><option value="all">모든 선생님의 피드백</option></select><span class="peer-helper">선택한 작성자의 피드백만 모든 참여자에게 실시간 표시됩니다.</span></div>
+        <div class="divider">연수 종료 · 자료 완전 삭제</div>
+        <div class="row"><button class="btn peer-danger sm" id="peerEndRoom">연수 종료 및 전체 자료 삭제</button><span id="peerDeleteStatus" class="peer-helper">먼저 문항별 피드백 PDF를 다운로드하세요. 삭제한 자료는 복구할 수 없습니다.</span></div>
+      </div>
+      <p class="peer-helper" id="peerGuestFilter" style="margin-bottom:0"></p>
+    </div>
+    <div class="card"><div class="row between"><div><h2 style="margin:0">내 문항 올리기</h2><p class="peer-helper" style="margin:4px 0 0">교사가 만든 문항·채점기준표만 등록 · PDF 최대 8MB · 사진 메타데이터 제거 · 결과 PDF 다운로드</p></div><span class="tag">PDF / 사진</span></div>
+      <div class="row mt12"><input type="text" id="peerFileTitle" maxlength="80" placeholder="문항 제목 (비우면 파일명 사용)" style="flex:1;min-width:170px">
+        <input type="file" id="peerFile" accept="application/pdf,image/jpeg,image/png,image/webp,.pdf,.jpg,.jpeg,.png,.webp" style="max-width:100%;width:240px" aria-label="문항 파일 선택">
+        <input type="file" id="peerCamera" accept="image/*" capture="environment" class="hidden" aria-label="카메라로 문항 촬영">
+        <button class="btn line sm" id="peerShoot">사진 촬영</button>
+        <button class="btn pri sm" id="peerUpload">${ic("plus")}업로드</button></div>
+      <div id="peerUploadStatus" class="peer-status mt8"></div><div id="peerUploadProgress" class="peer-upload-progress hidden"><i></i></div>
+    </div>
+    <div class="row between mt12"><h2 style="margin:0">올라온 문항 <span id="peerDocCount">0</span>개</h2><span class="peer-helper">문항을 선택하면 합평 화면이 열립니다.</span></div>
+    <div class="peer-files" id="peerFiles"><p class="peer-empty">등록된 문항이 없습니다.</p></div>
+    <div class="peer-work">
+      <div class="card peer-paper-card">
+        <div class="row between"><div><h2 id="peerSelectedTitle" style="margin:0">문항을 선택해 주세요</h2><span id="peerSelectedOwner" class="peer-helper"></span></div>
+          <button class="btn line sm hidden" id="peerExport">${ic("doc")}피드백 PDF 다운로드</button></div>
+        <div class="row between mt12"><div class="row"><button class="btn line sm" id="peerPrev">이전 쪽</button><b id="peerPages" class="sm-t">1 / 1</b><button class="btn line sm" id="peerNext">다음 쪽</button><select id="peerZoom" class="peer-filter" style="min-width:0;width:112px;padding:7px" aria-label="문항 확대"><option value="1">화면 맞춤</option><option value="1.5">150%</option><option value="2">200%</option><option value="3">300%</option></select></div>
+          <button class="btn pri sm" id="peerArm">${ic("pen")}피드백 위치 지정</button></div>
+        <div class="peer-paper-scroll mt12" id="peerPaperScroll"><div id="peerPaper" class="peer-paper"><div class="peer-empty">문항을 선택하면 이곳에 보입니다.</div></div></div>
+        <p class="peer-helper mt8" id="peerPaperHelp">피드백 위치 지정 버튼을 누른 후 문항의 해당 부분을 클릭하거나 터치해 주세요.</p>
+      </div>
+      <aside class="card peer-side"><div class="row between"><h2 style="margin:0">위치별 피드백</h2><span id="peerNoteCount" class="tag">0건</span></div>
+        <p id="peerFilterLabel" class="peer-helper mt8"></p><div id="peerDraftBox"></div><div id="peerNotes"></div></aside>
+    </div></div>`;
+  function handlePeerResize(){
+    const c=$("peerPaper")?.querySelector("canvas");
+    if(!c)return;
+    state.fitWidth=Math.min(c.width,Math.max(220,$("peerPaperScroll").clientWidth-28));
+    applyZoom();
+  }
+  window.addEventListener("resize",handlePeerResize);
+  $("peerExit").onclick=()=>{location.hash="peer";};
+  $("peerEndRoom").onclick=()=>finishPeerRoom();
+  $("peerCopy").onclick=async()=>{
+    try { await navigator.clipboard.writeText(code);toast("방 번호를 복사했습니다."); }
+    catch(e){toast("방 번호: "+code);}
+  };
+  $("peerArm").onclick=()=>{
+    const f=activeDoc();
+    if(!isOpen()) return toast("종료 중인 방에는 피드백을 남길 수 없습니다.");
+    if(!f) return toast("먼저 문항을 선택해 주세요.");
+    if(f.ownerUid===peerUid()) return toast("자신이 올린 문항에는 의견을 달 수 없습니다.");
+    state.armed=!state.armed;
+    updateToolbar();renderMarkers();
+    if(state.armed) toast("문항에서 피드백할 부분을 클릭하거나 터치해 주세요.");
+  };
+  $("peerPrev").onclick=()=>changePage(state.page-1);
+  $("peerNext").onclick=()=>changePage(state.page+1);
+  $("peerZoom").onchange=(e)=>{state.zoom=Number(e.target.value)||1;applyZoom();};
+  function applyZoom(){const stage=$("peerPaper");if(stage&&state.fitWidth)stage.style.width=Math.round(state.fitWidth*state.zoom)+"px";}
+  $("peerUpload").onclick=()=>uploadFile();
+  $("peerShoot").onclick=()=>$("peerCamera").click();
+  $("peerCamera").onchange=(e)=>{
+    state.cameraFile=e.target.files[0]||null;
+    if(state.cameraFile){$("peerFile").value="";$("peerUploadStatus").textContent=`촬영한 사진: ${state.cameraFile.name}`;}
+  };
+  $("peerFile").onchange=()=>{state.cameraFile=null;$("peerCamera").value="";};
+  $("peerExport").onclick=()=>exportPdf();
+  $("peerReviewerFilter").onchange=async e=>{
+    if(!isHost() || !isOpen()) return;
+    try {await updateDoc(peerRoomRef(code),{reviewFilter:e.target.value});}
+    catch(err){toast(peerErr(err));}
+  };
+  function updateToolbar() {
+    const f=activeDoc();
+    $("peerSelectedTitle").textContent = f?f.title:"문항을 선택해 주세요";
+    $("peerSelectedOwner").textContent=f?`올린 사람: ${f.ownerName} · ${f.fileName}`:"";
+    $("peerPages").textContent = `${state.page} / ${state.pageCount}`;
+    $("peerPrev").disabled = !f || state.page<=1 || state.loading;
+    $("peerNext").disabled = !f || state.page>=state.pageCount || state.loading;
+    $("peerArm").disabled = !isOpen() || !f || f.ownerUid===peerUid() || state.loading;
+    $("peerArm").classList.toggle("armed",state.armed);
+    $("peerArm").innerHTML=state.armed?"위치 지정 중 · 취소": `${ic("pen")}피드백 위치 지정`;
+    $("peerExport").classList.toggle("hidden", !f || f.ownerUid!==peerUid());
+    $("peerPaperHelp").textContent=!f?"문항을 선택해 주세요.":f.ownerUid===peerUid()?"내 문항에 달린 피드백을 확인하고 PDF로 내려받을 수 있습니다.":"위치 지정 버튼 → 문항의 해당 부분 클릭/터치 → 오른쪽 입력칸에 피드백 작성";
+  }
+  function updateHeader() {
+    if(!state.room)return;
+    $("peerRoomTitle").textContent=state.room.title;
+    $("peerWho").textContent=isHost()?"방장 · "+peerName():peerName();
+    $("peerPeopleCount").textContent=state.people.filter(p=>p.status==="approved").length+"명 참여";
+    $("peerHostTools").classList.toggle("hidden",!isHost());
+    const selection=state.room.reviewFilter||"all";
+    const select=$("peerReviewerFilter");
+    select.innerHTML=`<option value="all">모든 선생님의 피드백</option>`+state.people.filter(p=>p.status==="approved").map(p=>`<option value="${esc(p.id)}">${esc(p.name)} 선생님의 피드백</option>`).join("");
+    select.disabled=!isOpen();
+    $("peerUpload").disabled=!isOpen() || state.uploading;
+    $("peerShoot").disabled=!isOpen();
+    $("peerEndRoom").textContent=isOpen()?"연수 종료 및 전체 자료 삭제":"삭제 중단됨 · 전체 자료 삭제 마무리";
+    $("peerApprovals").innerHTML=state.people.filter(p=>p.id!==state.room.hostUid).map(p=>`<div class="peer-member"><span><b>${esc(p.name)}</b> <span class="peer-member-status">${p.status==="approved"?"승인됨":p.status==="rejected"?"승인 취소·거절":"승인 대기"}</span></span><div class="row">${p.status!=="approved"?`<button class="btn line sm" data-approve="${esc(p.id)}" ${!isOpen()?"disabled":""}>승인</button>`:`<button class="btn line sm" data-revoke="${esc(p.id)}" ${!isOpen()?"disabled":""}>승인 취소</button>`}</div></div>`).join("") || `<p class="peer-helper">참여 요청이 없습니다.</p>`;
+    $("peerApprovals").querySelectorAll("[data-approve],[data-revoke]").forEach(b=>b.onclick=async()=>{
+      if(!isHost()||!isOpen())return;
+      const uid=b.dataset.approve||b.dataset.revoke;
+      const status=b.dataset.approve?"approved":"rejected";
+      if(status==="rejected"&&!confirm("이 선생님의 열람·피드백 권한을 취소하시겠습니까?"))return;
+      b.disabled=true;
+      try{await updateDoc(doc(db,"peerRooms",code,"participants",uid),{status,reviewedAt:serverTimestamp()});toast(status==="approved"?"입장을 승인했습니다.":"승인을 취소했습니다.");}
+      catch(err){toast(peerErr(err));b.disabled=false;}
+    });
+    if(!isOpen()){
+      $("peerDeleteStatus").textContent="종료가 시작되어 새 문항·피드백을 등록할 수 없습니다. 방장이 삭제를 마무리할 수 있습니다.";
+    }
+    select.value=selection;
+    if(select.value!==selection)select.value="all";
+    const chosen=state.people.find(p=>p.id===selection);
+    $("peerGuestFilter").textContent=isHost()?"방장이 선택한 필터가 참여자 화면에도 적용됩니다.":`방장 표시 설정: ${chosen?chosen.name+" 선생님의 피드백만":"모든 선생님의 피드백"}`;
+    $("peerFilterLabel").textContent=chosen?`${chosen.name} 선생님의 의견만 표시 중 · 다른 피드백은 삭제되지 않습니다.`:"현재 전체 피드백 표시 중";
+  }
+  function updateFileBar() {
+    $("peerDocCount").textContent=state.docs.length;
+    const el=$("peerFiles");
+    el.innerHTML=state.docs.length?state.docs.map(f=>`<button class="peer-file ${f.id===state.activeId?'on':''}" data-pfile="${esc(f.id)}"><b>${esc(f.title)}</b><small>${esc(f.ownerName)} · ${f.mime==="application/pdf"?"PDF":"사진"} · ${currentCount(f.id)}건의 피드백</small></button>`).join(""):`<p class="peer-empty">아직 문항이 없습니다. 위에서 PDF 또는 사진을 올려주세요.</p>`;
+    el.querySelectorAll("[data-pfile]").forEach(b=>b.onclick=()=>selectFile(b.dataset.pfile));
+  }
+  const currentCount=id=>state.notes.filter(n=>n.documentId===id).length;
+  function renderNotes() {
+    const f=activeDoc(), ns=visibleNotes();
+    $("peerNoteCount").textContent=ns.length+"건";
+    let draftHtml="";
+    if(state.draft && f && f.ownerUid!==peerUid()){
+      draftHtml=`<div class="peer-draft"><div class="row between"><b>새 피드백 · ${state.draft.page}쪽</b><button class="btn line sm" id="peerCancelDraft">취소</button></div>
+      <p class="peer-helper" style="margin:4px 0 8px">표시한 위치에 의견을 남깁니다.</p>
+      <textarea id="peerDraftText" maxlength="2000" placeholder="예: 발문이 특정 답을 유도할 수 있습니다. 학생의 사고 과정을 확인할 수 있도록 조건을 수정해 보세요.">${esc(state.draft.text||"")}</textarea>
+      <div class="row end mt8"><button class="btn pri sm" id="peerSaveNote">${ic("check")}피드백 등록</button></div></div>`;
+    }
+    $("peerDraftBox").innerHTML=draftHtml;
+    if(state.draft){
+      const t=$("peerDraftText");if(t)t.oninput=e=>{state.draft.text=e.target.value;};
+      const cancel=$("peerCancelDraft");if(cancel)cancel.onclick=()=>{state.draft=null;renderNotes();renderMarkers();};
+      const save=$("peerSaveNote");if(save)save.onclick=()=>saveFeedback();
+    }
+    $("peerNotes").innerHTML=!f?`<div class="peer-empty">검토할 문항을 선택해 주세요.</div>`:ns.length?ns.map(n=>`
+      <div class="peer-note ${state.focused===n.id?'focus':''}" data-note="${esc(n.id)}" tabindex="0" role="button" aria-label="${esc(n.authorName)}의 피드백 ${noteIndex(n)}번 열기">
+        <div class="peer-meta"><b>● ${noteIndex(n)} · ${esc(n.authorName)}</b><span>${n.page}쪽 · ${dateText(n)}</span></div>
+        <p>${esc(n.text)}</p>
+        ${n.authorUid===peerUid()?`<div class="row end mt8"><button class="btn line sm" data-remove="${esc(n.id)}">내 의견 삭제</button></div>`:""}
+      </div>`).join(""):`<div class="peer-empty">${state.room&&state.room.reviewFilter!=="all"?"선택한 선생님의 피드백이 없습니다.":"아직 피드백이 없습니다. 문항의 해당 부분을 눌러 첫 의견을 남겨보세요."}</div>`;
+    $("peerNotes").querySelectorAll("[data-note]").forEach(node=>{
+      node.onclick=(e)=>{if(e.target.closest("[data-remove]"))return; focusNote(node.dataset.note);};
+      node.onkeydown=(e)=>{if(e.key==="Enter"&& !e.target.closest("button"))focusNote(node.dataset.note);};
+    });
+    $("peerNotes").querySelectorAll("[data-remove]").forEach(b=>b.onclick=async(e)=>{
+      e.stopPropagation();
+      if(!confirm("이 피드백을 삭제하시겠습니까?"))return;
+      try{await deleteDoc(doc(db,"peerRooms",code,"comments",b.dataset.remove));}catch(err){toast(peerErr(err));}
+    });
+  }
+  function renderMarkers() {
+    const layer=$("peerOverlay");if(!layer)return;
+    layer.classList.toggle("armed",state.armed);
+    const ns=visibleNotes().filter(n=>n.page===state.page);
+    layer.innerHTML=ns.map(n=>`<button type="button" class="peer-marker ${state.focused===n.id?'focus':''}" style="left:${n.x*100}%;top:${n.y*100}%" data-pin="${esc(n.id)}" title="${esc(n.authorName)}: ${esc(n.text.slice(0,60))}">${noteIndex(n)}</button>`).join("")+
+      (state.draft&&state.draft.page===state.page?`<span class="peer-marker draft" style="left:${state.draft.x*100}%;top:${state.draft.y*100}%">+</span>`:"");
+    layer.querySelectorAll("[data-pin]").forEach(b=>b.onclick=e=>{e.stopPropagation();focusNote(b.dataset.pin);});
+  }
+  async function focusNote(id) {
+    const n=currentNotes().find(n=>n.id===id);if(!n)return;
+    state.focused=id;
+    if(n.page!==state.page)await changePage(n.page);
+    else {renderMarkers();renderNotes();}
+    const node=$("peerNotes")?.querySelector(`[data-note="${id}"]`);
+    if(node)node.scrollIntoView({block:"nearest",behavior:"smooth"});
+  }
+  function installOverlay(){
+    const layer=$("peerOverlay");if(!layer)return;
+    layer.onclick=(e)=>{
+      if(!state.armed || e.target.closest("[data-pin]"))return;
+      if(!activeDoc()||activeDoc().ownerUid===peerUid())return;
+      const r=layer.getBoundingClientRect();if(!r.width||!r.height)return;
+      state.draft={page:state.page,x:Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),
+        y:Math.max(0,Math.min(1,(e.clientY-r.top)/r.height)),text:""};
+      state.armed=false;state.focused=null;
+      updateToolbar();renderMarkers();renderNotes();
+      const input=$("peerDraftText");if(input){input.scrollIntoView({block:"nearest",behavior:"smooth"});input.focus();}
+    };
+  }
+  function clearPaper(message="문항을 불러오는 중…"){$("peerPaper").innerHTML=`<div class="peer-empty">${esc(message)}</div>`;}
+  async function getFileBytes(f){
+    if(state.bytesCache.has(f.id))return state.bytesCache.get(f.id);
+    if(f.storageMode!=="firestoreChunks") throw new Error("이 문항은 이전 Storage 방식으로 저장되었습니다. 무료 버전에서 다시 업로드해 주세요.");
+    const snap=await getDocs(peerChunks(code,f.id));
+    if(snap.size!==f.chunkCount || f.chunkCount<1 || f.chunkCount>PEER_MAX_CHUNKS)
+      throw new Error("파일 일부가 누락되었습니다. 문항을 다시 업로드해 주세요.");
+    const rows=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>a.index-b.index);
+    const result=new Uint8Array(f.size);
+    let pos=0;
+    for(let i=0;i<rows.length;i++){
+      const part=rows[i];
+      if(part.index!==i || !part.data || typeof part.data.toUint8Array!=="function")
+        throw new Error("파일 조각 순서가 잘못되었습니다.");
+      const partBytes=part.data.toUint8Array();
+      if(partBytes.length<1 || partBytes.length>PEER_CHUNK_SIZE || pos+partBytes.length>result.length)
+        throw new Error("파일 데이터가 손상되었습니다.");
+      result.set(partBytes,pos);pos+=partBytes.length;
+    }
+    if(pos!==result.length)throw new Error("파일 크기가 일치하지 않습니다.");
+    state.bytesCache.set(f.id,result);
+    return result;
+  }
+  async function selectFile(id){
+    if(id===state.activeId && state.pdf && !state.loading)return;
+    ++state.loadToken;
+    if(state.pdf){try{await state.pdf.destroy();}catch(e){} state.pdf=null;}
+    if(state.imgUrl){URL.revokeObjectURL(state.imgUrl);state.imgUrl=null;}
+    state.activeId=id;state.page=1;state.pageCount=1;state.armed=false;state.focused=null;state.draft=null;state.zoom=1;state.fitWidth=0;$("peerZoom").value="1";
+    updateFileBar();updateToolbar();renderNotes();
+    await renderPage(true);
+  }
+  async function changePage(p){
+    if(state.loading || p<1 || p>state.pageCount)return;
+    state.page=p;state.focused=null;
+    updateToolbar();renderNotes();await renderPage(false);
+  }
+  async function renderPage(newFile){
+    const f=activeDoc();if(!f){clearPaper("문항을 선택해 주세요.");return;}
+    const token=++state.loadToken;
+    state.loading=true;updateToolbar();clearPaper();
+    try{
+      const bytes=await getFileBytes(f);
+      if(state.closed||token!==state.loadToken)return;
+      let canvas=document.createElement("canvas"), ctx=canvas.getContext("2d");
+      if(f.mime==="application/pdf"){
+        if(newFile||!state.pdf){
+          const pdfjs=await peerPdfJs();
+          state.pdf=await pdfjs.getDocument({data:new Uint8Array(bytes.slice(0))}).promise;
+          state.pageCount=state.pdf.numPages;
+          if(state.page>state.pageCount)state.page=state.pageCount;
+        }
+        const page=await state.pdf.getPage(state.page);
+        const viewport=page.getViewport({scale:1.5});
+        canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
+        if(state.closed||token!==state.loadToken)return;
+        await page.render({canvasContext:ctx,viewport}).promise;
+      } else {
+        if(state.imgUrl)URL.revokeObjectURL(state.imgUrl);
+        state.imgUrl=URL.createObjectURL(new Blob([bytes],{type:f.mime}));
+        const image=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(new Error("사진을 읽을 수 없습니다."));im.src=state.imgUrl;});
+        canvas.width=Math.max(1,image.naturalWidth);canvas.height=Math.max(1,image.naturalHeight);
+        ctx.drawImage(image,0,0);
+        state.pageCount=1;
+      }
+      if(state.closed||token!==state.loadToken)return;
+      const stage=$("peerPaper");
+      stage.innerHTML="";
+      state.fitWidth=Math.min(canvas.width,Math.max(220,$("peerPaperScroll").clientWidth-28));
+      applyZoom();
+      stage.append(canvas);
+      const layer=document.createElement("div");layer.id="peerOverlay";layer.className="peer-overlay";
+      stage.append(layer);
+      installOverlay();renderMarkers();updateToolbar();
+    }catch(e){if(!state.closed&&token===state.loadToken){clearPaper("문항을 표시하지 못했습니다. Firestore 규칙·문항 파일 형식을 확인해 주세요.");toast(peerErr(e));}}
+    finally{if(token===state.loadToken){state.loading=false;updateToolbar();}}
+  }
+  // Firestore는 상위 문서를 삭제해도 하위 컬렉션이 자동 삭제되지 않습니다.
+  // 종료 상태로 새로운 쓰기를 잠근 뒤 댓글 -> 파일 조각 -> 파일 -> 참여자 -> 방 순서로 정리합니다.
+  async function finishPeerRoom(){
+    if(!isHost()||state.deleting)return;
+    if(isOpen()){
+      if(!confirm("합평방을 종료하시겠습니까?\n\n등록된 모든 문항·사진·PDF, 피드백, 참여자 정보가 삭제됩니다.\n문항별 피드백 PDF를 먼저 다운로드했는지 확인해 주세요. 이 작업은 되돌릴 수 없습니다."))return;
+    }else if(!confirm("남아 있는 합평 자료의 삭제를 다시 진행하시겠습니까?"))return;
+    state.deleting=true;
+    const btn=$("peerEndRoom"), progress=$("peerDeleteStatus");
+    btn.disabled=true;
+    try{
+      if(isOpen()) await updateDoc(peerRoomRef(code),{status:"closing"});
+      progress.textContent="자료 목록을 확인하는 중…";
+      // 진행 중 중단되어도 다시 시작해 남은 자료를 지울 수 있습니다.
+      const allDocs=await getDocs(peerDocs(code));
+      const commentsSnap=await getDocs(peerComments(code));
+      const peopleSnap=await getDocs(collection(db,"peerRooms",code,"participants"));
+      const refs=[];
+      for(const c of commentsSnap.docs) refs.push(c.ref);
+      for(const item of allDocs.docs){
+        const chunkSnap=await getDocs(peerChunks(code,item.id));
+        for(const c of chunkSnap.docs)refs.push(c.ref);
+        refs.push(item.ref);
+      }
+      // 방장 참여자 문서는 삭제 재시도를 위한 마지막 접근 열쇠입니다.
+      // 방 자체와 같은 원자적 배치로 맨 마지막에 삭제해야, 중간 실패 시 재시작할 수 있습니다.
+      for(const person of peopleSnap.docs) if(person.id !== peerUid())refs.push(person.ref);
+      // 각 배치의 룰 검사 get() 호출 제한을 고려하여 10건 단위로 처리합니다.
+      for(let i=0;i<refs.length;i+=10){
+        const batch=writeBatch(db);
+        for(const ref of refs.slice(i,i+10))batch.delete(ref);
+        await batch.commit();
+        progress.textContent=`전체 자료 삭제 중… ${Math.min(i+10,refs.length)} / ${refs.length}건`;
+      }
+      // 최종 확인: 네트워크 오류 등으로 자료가 남은 경우 방은 유지하여 재시도 가능.
+      const remain=await Promise.all([
+        getDocs(peerDocs(code)),
+        getDocs(peerComments(code)),
+        getDocs(collection(db,"peerRooms",code,"participants"))
+      ]);
+      if(remain[0].size || remain[1].size || remain[2].docs.some(p=>p.id!==peerUid()))
+        throw new Error("삭제되지 않은 자료가 발견되었습니다. 다시 마무리해 주세요.");
+      // 방장 참여자와 방 문서를 함께 지워 둘 중 하나만 남는 상태를 막습니다.
+      const finalBatch=writeBatch(db);
+      if(remain[2].docs.some(p=>p.id===peerUid())) finalBatch.delete(peerPersonRef(code));
+      finalBatch.delete(peerRoomRef(code));
+      await finalBatch.commit();
+      state.closed=true;
+      toast("합평방의 문항·파일·피드백·참여자 정보 삭제를 완료했습니다.");
+      location.hash="peer";
+    }catch(e){
+      console.error("합평방 삭제 실패",e);
+      progress.textContent="삭제가 중단되었습니다. 아래 버튼으로 삭제 마무리를 다시 실행해 주세요. "+peerErr(e);
+      toast("삭제가 일부 완료되지 않았습니다. 다시 실행해 주세요.");
+    }finally{
+      state.deleting=false;
+      if(btn)btn.disabled=false;
+    }
+  }
+  async function saveFeedback(){
+    const f=activeDoc(), draft=state.draft, name=peerName();
+    if(!isOpen()||!f||!draft||f.ownerUid===peerUid())return;
+    if(!peerText(draft.text,2000))return toast("피드백 내용을 적어주세요.");
+    const button=$("peerSaveNote");if(button)button.disabled=true;
+    try{
+      const nr=doc(peerComments(code));
+      await setDoc(nr,{documentId:f.id,authorUid:peerUid(),authorName:name,page:draft.page,x:draft.x,y:draft.y,
+        text:peerText(draft.text,2000),createdAt:serverTimestamp()});
+      state.draft=null;state.focused=nr.id;renderNotes();renderMarkers();toast("피드백을 등록했습니다.");
+    }catch(e){toast(peerErr(e));if(button)button.disabled=false;}
+  }
+  // 사진은 크기에 관계없이 브라우저 Canvas로 다시 인코딩해 EXIF 등 위치 메타데이터를 제거합니다.
+  // PDF는 텍스트 품질을 보존하기 위해 원본 바이트를 사용하므로 작성자가 문서 속성을 확인해야 합니다.
+  async function preparePeerFile(file,mime){
+    if(file.size===0)throw new Error("빈 파일은 올릴 수 없습니다.");
+    if(mime==="application/pdf"){
+      if(file.size>PEER_LIMIT)throw new Error("PDF는 최대 8MB까지 가능합니다. PDF를 압축하거나 나누어 올려주세요.");
+      return {bytes:new Uint8Array(await file.arrayBuffer()),mime};
+    }
+    const img=await new Promise((resolve,reject)=>{
+      const im=new Image(),url=URL.createObjectURL(file);
+      im.onload=()=>{URL.revokeObjectURL(url);resolve(im);};
+      im.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("사진을 열 수 없습니다."));};
+      im.src=url;
+    });
+    const ratio=Math.min(1,2600/Math.max(img.naturalWidth,img.naturalHeight));
+    const canvas=document.createElement("canvas");
+    canvas.width=Math.max(1,Math.round(img.naturalWidth*ratio));
+    canvas.height=Math.max(1,Math.round(img.naturalHeight*ratio));
+    const ctx=canvas.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    let output=null;
+    for(const quality of [.94,.88,.8,.7,.6,.5]){
+      output=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",quality));
+      if(output&&output.size<=PEER_LIMIT)break;
+    }
+    if(!output||output.size>PEER_LIMIT)throw new Error("사진 용량을 줄이지 못했습니다. 더 작은 사진을 선택해 주세요.");
+    return {bytes:new Uint8Array(await output.arrayBuffer()),mime:"image/jpeg"};
+  }
+  async function uploadFile(){
+    if(state.uploading)return;
+    if(!isOpen())return toast("연수가 종료 중이므로 업로드할 수 없습니다.");
+    const file=state.cameraFile||$("peerFile").files[0];if(!file)return toast("PDF나 사진 파일을 선택해 주세요.");
+    const incomingMime=peerMime(file);
+    if(!PEER_TYPES.has(incomingMime))return toast("PDF, JPG, PNG 또는 WEBP 파일만 올릴 수 있습니다.");
+    const title=peerText($("peerFileTitle").value,80)||peerText(file.name.replace(/\.[^.]+$/,""),80)||"새 문항";
+    const docRef=doc(peerDocs(code));
+    const chunksRef=peerChunks(code,docRef.id);
+    const written=[];
+    let metadataCreated=false;
+    state.uploading=true;$("peerUpload").disabled=true;$("peerUploadProgress").classList.remove("hidden");
+    $("peerUploadStatus").textContent="업로드할 파일 준비 중…";
+    try{
+      const {bytes,mime}=await preparePeerFile(file,incomingMime);
+      const chunkCount=Math.ceil(bytes.length/PEER_CHUNK_SIZE);
+      if(chunkCount<1||chunkCount>PEER_MAX_CHUNKS)throw new Error("파일이 무료 저장 한도를 초과했습니다.");
+      await setDoc(docRef,{ownerUid:peerUid(),ownerName:peerName(),title,fileName:peerText(file.name,120),
+        mime,storageMode:"firestoreChunks",chunkCount,size:bytes.length,status:"uploading",createdAt:serverTimestamp()});
+      metadataCreated=true;
+      for(let i=0;i<chunkCount;i++){
+        if(!isOpen())throw new Error("방이 종료되어 업로드를 중단했습니다.");
+        const slice=bytes.subarray(i*PEER_CHUNK_SIZE,Math.min(bytes.length,(i+1)*PEER_CHUNK_SIZE));
+        const partRef=doc(chunksRef,String(i).padStart(3,"0"));
+        await setDoc(partRef,{ownerUid:peerUid(),index:i,data:Bytes.fromUint8Array(slice)});
+        written.push(partRef);
+        const pct=Math.round((i+1)/chunkCount*95);
+        $("peerUploadStatus").textContent=`Firestore에 저장 중… ${pct}% (${i+1}/${chunkCount}조각)`;
+        $("peerUploadProgress").firstElementChild.style.width=pct+"%";
+      }
+      await updateDoc(docRef,{status:"ready"});
+      state.bytesCache.set(docRef.id,bytes);
+      $("peerUploadProgress").firstElementChild.style.width="100%";
+      $("peerFile").value="";$("peerCamera").value="";state.cameraFile=null;$("peerFileTitle").value="";
+      $("peerUploadStatus").textContent="업로드 완료! 다른 선생님들에게 문항이 표시됩니다.";
+      toast("문항을 올렸습니다.");
+      await selectFile(docRef.id);
+    }catch(e){
+      // 미완료 업로드의 조각만 삭제합니다. 정상 문항은 마지막에 생성되므로 다른 사람에게 표시되지 않습니다.
+      for(const partRef of written)await deleteDoc(partRef).catch(err=>console.warn("업로드 정리 실패",err));
+      if(metadataCreated)await deleteDoc(docRef).catch(err=>console.warn("업로드 문서 정리 실패",err));
+      $("peerUploadStatus").textContent=peerErr(e);toast("문항 업로드를 확인해 주세요.");
+    }finally{
+      state.uploading=false;$("peerUpload").disabled=false;$("peerUploadProgress").classList.add("hidden");
+      $("peerUploadProgress").firstElementChild.style.width="0";
+    }
+  }
+  // 브라우저의 한글 폰트로 텍스트를 그려 PDF에 이미지 형태로 넣으므로 별도 폰트 파일이 필요 없습니다.
+  async function exportPdf(){
+    const f=activeDoc();if(!f||f.ownerUid!==peerUid())return toast("본인이 올린 문항만 내려받을 수 있습니다.");
+    const button=$("peerExport");button.disabled=true;button.textContent="PDF 만드는 중…";
+    try{
+      const bytes=await getFileBytes(f);
+      const {PDFDocument,StandardFonts,rgb}=await peerPdfLib();
+      let pdf;
+      if(f.mime==="application/pdf") pdf=await PDFDocument.load(bytes.slice(0));
+      else{
+        pdf=await PDFDocument.create();
+        let image;
+        if(f.mime==="image/jpeg")image=await pdf.embedJpg(bytes.slice(0));
+        else if(f.mime==="image/png")image=await pdf.embedPng(bytes.slice(0));
+        else{
+          const img=new Image(), url=URL.createObjectURL(new Blob([bytes],{type:f.mime}));
+          try{
+            await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=url;});
+            const c=document.createElement("canvas");c.width=img.naturalWidth;c.height=img.naturalHeight;
+            c.getContext("2d").drawImage(img,0,0);image=await pdf.embedPng(await (await fetch(c.toDataURL("image/png"))).arrayBuffer());
+          }finally{URL.revokeObjectURL(url);}
+        }
+        const p=pdf.addPage([595.28,841.89]), k=Math.min(555/image.width,790/image.height);
+        p.drawImage(image,{x:(595.28-image.width*k)/2,y:(841.89-image.height*k)/2,width:image.width*k,height:image.height*k});
+        stateExportImgSize={w:image.width*k,h:image.height*k};
+      }
+      const all=currentNotes();
+      const font=await pdf.embedFont(StandardFonts.HelveticaBold);
+      const pageCount=pdf.getPageCount();
+      for(let i=0;i<pageCount;i++){
+        const page=pdf.getPage(i);const {width,height}=page.getSize();
+        all.filter(n=>n.page===i+1).forEach(n=>{
+          const num=noteIndex(n),cx=n.x*width,cy=(1-n.y)*height;
+          // 사진 파일은 A4에 여백을 두고 배치하므로 핀도 사진 영역을 기준으로 배치
+          const px=f.mime==="application/pdf"?cx:((width-embeddedWidth())/2+n.x*embeddedWidth());
+          const py=f.mime==="application/pdf"?cy:((height-embeddedHeight())/2+(1-n.y)*embeddedHeight());
+          page.drawCircle({x:px,y:py,size:11,color:rgb(.08,.55,.53),borderColor:rgb(1,1,1),borderWidth:1});
+          const label=String(num),size=num>99?8:10;
+          page.drawText(label,{x:px-font.widthOfTextAtSize(label,size)/2,y:py-3.5,size,font,color:rgb(1,1,1)});
+        });
+      }
+      function embeddedWidth(){
+        // JPEG/PNG/WEBP의 이미지 크기는 페이지의 최대 표시 영역에 맞게 계산합니다.
+        return stateExportImgSize?.w || 555;
+      }
+      function embeddedHeight(){return stateExportImgSize?.h || 790;}
+      // 뒤쪽에 작성자별 의견 전체 목록 첨부 (방장의 현재 표시 필터와 무관)
+      const info = all.map(n=>({index:noteIndex(n),page:n.page,name:n.authorName,time:dateText(n),text:n.text}));
+      await appendKoreanCommentPages(pdf,{title:f.title,owner:f.ownerName,code,notes:info});
+      const blob=new Blob([await pdf.save()],{type:"application/pdf"});
+      const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+      a.download=`합평결과_${f.title.replace(/[\\/:*?"<>|]/g,"_").slice(0,45)}.pdf`;
+      document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),10000);
+      toast("모든 피드백이 포함된 PDF를 생성했습니다.");
+    }catch(e){console.error(e);toast("PDF 생성에 실패했습니다. 암호화된 PDF 또는 파일 형식을 확인해 주세요.");}
+    finally{button.disabled=false;button.innerHTML=`${ic("doc")}피드백 PDF 다운로드`;}
+  }
+  let stateExportImgSize=null;
+  async function appendKoreanCommentPages(pdf, data){
+    const W=1190,H=1684, left=88, right=1102, top=110, bottom=1580;
+    let canvas,ctx,y,pg=0;
+    async function flush(){
+      if(!canvas)return;
+      const png=await pdf.embedPng(canvas.toDataURL("image/png"));
+      pdf.addPage([595,842]).drawImage(png,{x:0,y:0,width:595,height:842});
+    }
+    async function fresh(){
+      if(canvas)await flush();
+      pg++;canvas=document.createElement("canvas");canvas.width=W;canvas.height=H;ctx=canvas.getContext("2d");
+      ctx.fillStyle="#fff";ctx.fillRect(0,0,W,H);ctx.fillStyle="#168C88";ctx.fillRect(0,0,W,16);
+      ctx.fillStyle="#162F43";ctx.font="bold 48px 'Noto Sans KR',sans-serif";ctx.fillText("서·논술형 평가 문항 합평 기록",left,top);
+      ctx.fillStyle="#546775";ctx.font="28px 'Noto Sans KR',sans-serif";
+      ctx.fillText(`문항: ${data.title.slice(0,32)}  |  올린 사람: ${data.owner.slice(0,15)}`,left,top+54);
+      ctx.fillText(`방 번호: ${data.code}  ·  총 피드백 ${data.notes.length}건  ·  기록 ${pg}쪽`,left,top+97);
+      ctx.strokeStyle="#DFE9EA";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(left,top+122);ctx.lineTo(right,top+122);ctx.stroke();
+      y=top+174;
+    }
+    const wrapLines = (str, maxWidth) => {
+      const lines=[];const parts=String(str).replace(/\r/g,"").split("\n");
+      for(const paragraph of parts){
+        if(!paragraph){lines.push("");continue;}
+        let line="";
+        for(const ch of paragraph){
+          if(ctx.measureText(line+ch).width>maxWidth&&line){lines.push(line);line=ch;}else line+=ch;
+        }
+        lines.push(line);
+      }
+      return lines;
+    };
+    await fresh();
+    if(!data.notes.length){ctx.fillStyle="#526571";ctx.font="32px 'Noto Sans KR',sans-serif";ctx.fillText("등록된 피드백이 없습니다.",left,y+30);}
+    for(const n of data.notes){
+      if(y>bottom-160)await fresh();
+      ctx.fillStyle="#E6F3F2";ctx.fillRect(left,y-34,right-left,64);
+      ctx.fillStyle="#126D69";ctx.font="bold 29px 'Noto Sans KR',sans-serif";
+      ctx.fillText(`[${n.index}] ${n.page}쪽 · ${n.name.slice(0,18)}`,left+16,y+8);
+      ctx.fillStyle="#78868B";ctx.font="24px 'Noto Sans KR',sans-serif";
+      ctx.fillText(n.time,right-ctx.measureText(n.time).width-16,y+7);
+      y+=75;
+      ctx.font="29px 'Noto Sans KR',sans-serif";
+      const lines=wrapLines(n.text,right-left-38);
+      for(const line of lines){
+        if(y>bottom-50)await fresh();
+        ctx.fillStyle="#253949";ctx.fillText(line,left+18,y);y+=45;
+      }
+      y+=40;
+    }
+    await flush();
+  }
+  // 구독 중인 결과가 현재 화면에 반영되도록 유지
+  unsubs.push(onSnapshot(peerPersonRef(code),snap=>{
+    if(state.closed)return;
+    if(!snap.exists()||snap.data().status!=="approved"){
+      route();
+    }
+  },e=>{if(!state.closed)toast(peerErr(e));}));
+  unsubs.push(onSnapshot(peerRoomRef(code),s=>{
+    if(!s.exists()){ if(!state.closed){cleanup(); $app.innerHTML=msgCard("합평이 종료되었습니다", "방장에 의해 등록된 문항과 피드백이 삭제되었습니다.");}return; }
+    state.room=s.data();if(state.closed)return;
+    if(state.room.status==="closing" && !isHost()){
+      cleanup(); $app.innerHTML=msgCard("합평이 종료되는 중입니다", "방장이 자료를 삭제하고 있습니다. 더 이상 문항을 열람할 수 없습니다.");return;
+    }
+    updateHeader();renderNotes();renderMarkers();
+  },e=>toast(peerErr(e))));
+  unsubs.push(onSnapshot(collection(db,"peerRooms",code,"participants"),ss=>{
+    state.people=ss.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>a.name.localeCompare(b.name,"ko"));
+    if(state.closed)return;updateHeader();
+  },e=>toast(peerErr(e))));
+  unsubs.push(onSnapshot(peerDocs(code),ss=>{
+    state.docs=ss.docs.map(d=>({id:d.id,...d.data()})).filter(f=>f.status!=="uploading").sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+    if(state.closed)return;
+    if(!state.activeId && state.docs.length)selectFile(state.docs[0].id);
+    else if(state.activeId && !state.docs.find(d=>d.id===state.activeId)) {state.activeId=null;clearPaper("문항을 선택해 주세요.");}
+    updateFileBar();updateToolbar();renderNotes();
+  },e=>toast(peerErr(e))));
+  unsubs.push(onSnapshot(peerComments(code),ss=>{
+    state.notes=ss.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+    if(state.closed)return;
+    updateFileBar();renderNotes();renderMarkers();
+  },e=>toast(peerErr(e))));
+}
+
+// =====================================================================
+// 라우터
+// =====================================================================
+async function route() {
+  cleanup();
+  if (peerCleanup) { peerCleanup(); peerCleanup = null; }
+  const h = location.hash.replace(/^#/, "");
+  const [m, arg] = h.split("/");
+  $("homeBtn").classList.toggle("hidden", !m);
+  if (["room", "host", "play", "peer", "peerroom"].includes(m)) {
+    $app.innerHTML = loading();
+    await fbReady;
+    if (!needDb()) return;
+  }
+  if (m === "peer") peerEntry();
+  else if (m === "peerroom" && arg) peerRoomView(arg);
+  else if (m === "room") roomEntry();
+  else if (m === "host" && arg) hostView(arg);
+  else if (m === "play" && arg) playView(arg);
+  else if (m === "clinic") clinicStart();
+  else if (m === "polish") polish();
+  else home();
+  window.scrollTo(0, 0);
+}
+route();
+</script>
+</body>
+</html>
